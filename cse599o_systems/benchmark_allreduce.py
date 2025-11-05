@@ -126,10 +126,12 @@ def save_stats_to_csv(
         )
 
         for i, elapses in enumerate(latencies_per_iter):
+            # Times in milliseconds
             avg_time = np.mean(elapses)
             max_time = max(elapses)
             std_time = np.std(elapses)
             diff_time = max_time - min(elapses)
+            # Throughput in bytes/ms
             avg_tput_per_gpu = (
                 ring_based_size_per_gpu_bytes / avg_time if avg_time != 0 else 0
             )
