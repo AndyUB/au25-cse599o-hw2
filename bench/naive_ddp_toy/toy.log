@@ -1,0 +1,21 @@
+Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([2]), skipping all-reduce
+Rank 0 found None grad for param with shape torch.Size([50]), skipping all-reduce
+Naive DDP matches baseline!

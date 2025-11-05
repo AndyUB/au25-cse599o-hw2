@@ -1,1 +1,2 @@
 !allreduce/**/*
+!naive_ddp_toy/**/*
