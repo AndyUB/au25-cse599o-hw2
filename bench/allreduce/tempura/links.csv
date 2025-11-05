@@ -1,0 +1,9 @@
+index, name, pci.bus_id, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, Quadro RTX 6000, 00000000:1A:00.0, 1, 3, 16, 16
+1, Quadro RTX 6000, 00000000:1B:00.0, 1, 3, 16, 16
+2, Quadro RTX 6000, 00000000:1F:00.0, 1, 3, 16, 16
+3, Quadro RTX 6000, 00000000:20:00.0, 1, 3, 16, 16
+4, Quadro RTX 6000, 00000000:21:00.0, 1, 3, 16, 16
+5, Quadro RTX 6000, 00000000:22:00.0, 1, 3, 16, 16
+6, Quadro RTX 6000, 00000000:23:00.0, 1, 3, 16, 16
+7, Quadro RTX 6000, 00000000:24:00.0, 1, 3, 16, 16
