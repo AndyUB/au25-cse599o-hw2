@@ -18,19 +18,28 @@
 # -------------------------------------------------------------
 
 import argparse
+import numpy as np
 import os
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp
-from cse599o_basics.util import AdamW
+from cse599o_basics.util import AdamW, cross_entropy_loss
+from cse599o_basics.transformer import Transformer
 from tests.common import ToyModel
 
 SEED = 599
-ADAMW_PARAMS = {
+ADAMW_ARGS = {
     "lr": 1e-3,
     "betas": (0.9, 0.999),
     "eps": 1e-8,
     "weight_decay": 0.01,
+}
+TRANSFORMER_ARGS = {
+    "vocab_size": 50257,
+    "d_model": 1280,
+    "d_ff": 5120,
+    "num_layers": 36,
+    "num_heads": 20,
 }
 
 
@@ -110,6 +119,7 @@ def run_naive_ddp_worker(
     num_steps: int,
     ckpt_path: str,
     result_queue: mp.Queue,
+    verbose: bool,
 ) -> None:
     """Run one DDP worker process."""
     os.environ["MASTER_ADDR"] = "localhost"
@@ -124,7 +134,7 @@ def run_naive_ddp_worker(
     _, target_list = load_ckpt(model, ckpt_path, num_steps)
     model.to(device)
     # No need to sync parameters as they are loaded from checkpoint
-    optimizer = AdamW(model.parameters(), **ADAMW_PARAMS)
+    optimizer = AdamW(model.parameters(), **ADAMW_ARGS)
 
     data_shard, target_shard_list = get_data_targets_shard(
         data, target_list, rank, world_size, device
@@ -141,10 +151,11 @@ def run_naive_ddp_worker(
         # Parameters are iterated in the same order on all processes
         for param in model.parameters():
             if param.grad is None:
-                print(
-                    f"Rank {rank} found None grad for param "
-                    f"with shape {param.shape}, skipping all-reduce"
-                )
+                if verbose:
+                    print(
+                        f"Rank {rank} found None grad for param "
+                        f"with shape {param.shape}, skipping all-reduce"
+                    )
                 continue
             dist.all_reduce(param.grad.data, op=dist.ReduceOp.SUM)
             param.grad.data /= world_size
@@ -178,7 +189,7 @@ def run_baseline(
     data = data.to("cpu")
     target_list = [target.to("cpu") for target in target_list]
 
-    optimizer = AdamW(model.parameters(), **ADAMW_PARAMS)
+    optimizer = AdamW(model.parameters(), **ADAMW_ARGS)
     for step in range(num_steps):
         optimizer.zero_grad()
         output = model(data)
@@ -189,7 +200,7 @@ def run_baseline(
     return model.state_dict()
 
 
-def verify_naive_ddp(ckpt_path: str) -> None:
+def verify_naive_ddp(ckpt_path: str, verbose: bool) -> None:
     """Benchmark and verify naive DDP."""
     world_size = 2
     num_steps = 5
@@ -215,7 +226,14 @@ def verify_naive_ddp(ckpt_path: str) -> None:
 
     mp.spawn(
         run_naive_ddp_worker,
-        args=(world_size, data, num_steps, ckpt_path, result_queue),
+        args=(
+            world_size,
+            data,
+            num_steps,
+            ckpt_path,
+            result_queue,
+            verbose,
+        ),
         nprocs=world_size,
         join=True,
     )
@@ -229,19 +247,216 @@ def verify_naive_ddp(ckpt_path: str) -> None:
     print("Naive DDP matches baseline!")
 
 
-def time_naive_ddp():
+def run_transformer_worker(
+    rank: int,
+    world_size: int,
+    global_input_ids: torch.Tensor,
+    global_target_ids: torch.Tensor,
+    context_length: int,
+    rope_theta: float,
+    warmup_steps: int,
+    benchmark_steps: int,
+    log_dir: str | None,
+    verbose: bool,
+) -> None:
+    """Run one transformer DDP worker process."""
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "12888"
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    device = torch.device(f"cuda:{rank}")
+    torch.cuda.set_device(device)
+
+    model = Transformer(
+        context_length=context_length,
+        theta=rope_theta,
+        device=device,
+        **TRANSFORMER_ARGS,
+    ).to(device)
+
+    # Sync parameters: broadcast from rank 0 to all other ranks
+    for param in model.parameters():
+        dist.broadcast(param.data, src=0)
+    for buffer in model.buffers():
+        dist.broadcast(buffer.data, src=0)
+    if verbose and rank == 0:
+        param_count = sum(1 for _ in model.parameters())
+        buffer_count = sum(1 for _ in model.buffers())
+        broadcast_count = param_count + buffer_count
+        print(
+            f"{broadcast_count} broadcasts to sync "
+            f"{param_count} params and {buffer_count} buffers"
+        )
+
+    optimizer = AdamW(model.parameters(), **ADAMW_ARGS)
+
+    local_batch_size = global_input_ids.shape[0] // world_size
+    input_ids_shard = global_input_ids[
+        rank * local_batch_size : (rank + 1) * local_batch_size
+    ].to(device)
+    target_ids_shard = global_target_ids[
+        rank * local_batch_size : (rank + 1) * local_batch_size
+    ].to(device)
+
+    step_times = []
+    comm_times = []
+    for _ in range(warmup_steps + benchmark_steps):
+        step_start_ev = torch.cuda.Event(enable_timing=True)
+        step_end_ev = torch.cuda.Event(enable_timing=True)
+        comm_start_ev = torch.cuda.Event(enable_timing=True)
+        comm_end_ev = torch.cuda.Event(enable_timing=True)
+
+        torch.cuda.synchronize()
+        step_start_ev.record()
+        # Forward and backward pass
+        optimizer.zero_grad()
+        output = model(input_ids_shard)
+        loss = cross_entropy_loss(output, target_ids_shard)
+        loss.backward()
+
+        comm_start_ev.record()
+        # Naively all-reduce each parameter's gradient
+        # Parameters are iterated in the same order on all processes
+        for param in model.parameters():
+            if param.grad is None:
+                print(
+                    f"Rank {rank} found None grad for param "
+                    f"with shape {param.shape}, skipping all-reduce"
+                )
+                continue
+            dist.all_reduce(param.grad.data, op=dist.ReduceOp.SUM)
+            param.grad.data /= world_size
+        comm_end_ev.record()
+
+        optimizer.step()
+        step_end_ev.record()
+        step_end_ev.synchronize()
+        torch.cuda.synchronize()
+
+        step_time = step_start_ev.elapsed_time(step_end_ev)
+        comm_time = comm_start_ev.elapsed_time(comm_end_ev)
+        step_times.append(step_time)  # in milliseconds
+        comm_times.append(comm_time)
+
+    dist.destroy_process_group()
+
+    stats = None
+    if log_dir is not None:
+        os.makedirs(log_dir, exist_ok=True)
+        with open(os.path.join(log_dir, f"rank_{rank}.csv"), "w") as f:
+            f.write("iter,step_time(ms),comm_time(ms)\n")
+
+            for i in range(warmup_steps):
+                f.write(f"warmup{i},{step_times[i]},{comm_times[i]}\n")
+            for i in range(benchmark_steps):
+                f.write(
+                    f"bench{i},{step_times[warmup_steps + i]},"
+                    f"{comm_times[warmup_steps + i]}\n"
+                )
+
+            avg_step_time = np.mean(step_times[warmup_steps:])
+            std_step_time = np.std(step_times[warmup_steps:])
+            avg_comm_time = np.mean(comm_times[warmup_steps:])
+            std_comm_time = np.std(comm_times[warmup_steps:])
+            stats = (avg_step_time, avg_comm_time)
+            f.write(
+                f"avg,{avg_step_time},{avg_comm_time}\n"
+                f"std,{std_step_time},{std_comm_time}\n"
+            )
+
+    if rank == 0:
+        # Print per-iteration communication and step time
+        if stats is None:
+            avg_step_time = np.mean(step_times[warmup_steps:])
+            avg_comm_time = np.mean(comm_times[warmup_steps:])
+        else:
+            avg_step_time, avg_comm_time = stats
+        print(
+            "=== Naive DDP Transformer Benchmark Results ===\n"
+            "(Rank 0) Per-iteration training time: "
+            f"{avg_step_time:.2f} ms\n"
+            "(Rank 0) Per-iteration gradient communication time: "
+            f"{avg_comm_time:.2f} ms\n"
+            "Fraction of gradient communication time in an iteration: "
+            f"{100 * avg_comm_time / avg_step_time:.2f}%"
+        )
+
+
+def time_naive_ddp(
+    world_size: int,
+    global_batch_size: int,
+    context_length: int,
+    rope_theta: float,
+    warmup_steps: int,
+    benchmark_steps: int,
+    log_dir: str | None,
+    verbose: bool,
+):
     """Timing benchmark for naive DDP with transformer model."""
-    # TODO
-    pass
+    set_seed(SEED)
+    if global_batch_size % world_size != 0:
+        raise ValueError(
+            f"Global batch size {global_batch_size} not divisible by world size {world_size}"
+        )
+
+    # Use same batch of random data in all iterations
+    global_seqs = torch.randint(
+        low=0,
+        high=TRANSFORMER_ARGS["vocab_size"],
+        size=(global_batch_size, context_length + 1),
+    )
+    global_input_ids = global_seqs[..., :context_length]
+    global_target_ids = global_seqs[..., 1 : context_length + 1]
+
+    mp.set_start_method("spawn", force=True)
+    mp.spawn(
+        run_transformer_worker,
+        args=(
+            world_size,
+            global_input_ids,
+            global_target_ids,
+            context_length,
+            rope_theta,
+            warmup_steps,
+            benchmark_steps,
+            log_dir,
+            verbose,
+        ),
+        nprocs=world_size,
+        join=True,
+    )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", choices=["toy", "transformer"], default="toy")
+    parser.add_argument("--verbose", action="store_true")
+
+    # Toy model arguments
     parser.add_argument("--toy_ckpt_path", type=str, default="toy_model_ckpt.pt")
+
+    # Transformer model arguments
+    parser.add_argument("--transformer_world_size", type=int, default=2)
+    parser.add_argument("--transformer_global_batch_size", type=int, default=8)
+    parser.add_argument("--transformer_context_length", type=int, default=256)
+    parser.add_argument("--transformer_rope_theta", type=float, default=10000)
+    parser.add_argument("--transformer_warmup_steps", type=int, default=2)
+    parser.add_argument("--transformer_benchmark_steps", type=int, default=5)
+    parser.add_argument("--transformer_log_dir", type=str, default=None)
     args = parser.parse_args()
 
+    if args.verbose:
+        print(f"Args: {args}")
+
     if args.model == "toy":
-        verify_naive_ddp(args.toy_ckpt_path)
+        verify_naive_ddp(args.toy_ckpt_path, args.verbose)
     elif args.model == "transformer":
-        time_naive_ddp()
+        time_naive_ddp(
+            args.transformer_world_size,
+            args.transformer_global_batch_size,
+            args.transformer_context_length,
+            args.transformer_rope_theta,
+            args.transformer_warmup_steps,
+            args.transformer_benchmark_steps,
+            args.transformer_log_dir,
+            args.verbose,
+        )

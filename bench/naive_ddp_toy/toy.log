@@ -1,3 +1,4 @@
+Args: Namespace(model='toy', verbose=True, toy_ckpt_path='../bench/naive_ddp_toy/toy.pt', transformer_world_size=2, transformer_global_batch_size=8, transformer_context_length=256, transformer_rope_theta=10000, transformer_warmup_steps=2, transformer_benchmark_steps=5, transformer_log_dir=None)
 Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce
 Rank 1 found None grad for param with shape torch.Size([50]), skipping all-reduce
 Rank 1 found None grad for param with shape torch.Size([2]), skipping all-reduce

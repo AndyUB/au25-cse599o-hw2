@@ -3,4 +3,11 @@ mkdir -p $TOY_DIR
 
 CKPT_PATH=$TOY_DIR/toy.pt
 
-uv run benchmark_naive_ddp.py --toy_ckpt_path $CKPT_PATH > $TOY_DIR/toy.log 2>&1
+uv run benchmark_naive_ddp.py --verbose --toy_ckpt_path $CKPT_PATH > $TOY_DIR/toy.log 2>&1
+
+TRANSFORMER_DIR=../bench/naive_ddp_transformer
+mkdir -p $TRANSFORMER_DIR
+
+uv run benchmark_naive_ddp.py --model transformer \
+    --verbose \
+    --transformer_log_dir $TRANSFORMER_DIR > $TRANSFORMER_DIR/transformer.log 2>&1
