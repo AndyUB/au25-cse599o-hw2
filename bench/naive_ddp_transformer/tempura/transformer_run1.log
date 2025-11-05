@@ -1,0 +1,4 @@
+=== Naive DDP Transformer Benchmark Results ===
+(Rank 0) Per-iteration training time: 1436.02 ms
+(Rank 0) Per-iteration gradient communication time: 488.03 ms
+Fraction of gradient communication time in an iteration: 33.98%
