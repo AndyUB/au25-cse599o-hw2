@@ -18,6 +18,7 @@ else
 fi
 
 OUTPUT_DIR=../bench/allreduce
+# OUTPUT_DIR=../bench/allreduce/tempura
 # If -c (or -cd) is specified, clean previous logs
 if [ "$1" == "-c" ] || [ "$1" == "-cd" ]; then
     rm -rf $OUTPUT_DIR

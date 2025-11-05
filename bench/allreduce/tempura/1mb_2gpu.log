@@ -1,0 +1,18 @@
+Using CPython 3.12.7 interpreter at: /homes/iws/yhruan22/anaconda3/bin/python3
+Creating virtual environment at: /homes/iws/yhruan22/au25-cse599o-hw2/.venv
+   Building cse599o-systems @ file:///homes/iws/yhruan22/au25-cse599o-hw2
+   Building cse599o-basics @ file:///homes/iws/yhruan22/au25-cse599o-hw2/cse599o-basics
+      Built cse599o-systems @ file:///homes/iws/yhruan22/au25-cse599o-hw2
+Downloading pillow (6.3MiB)
+Downloading kiwisolver (1.4MiB)
+Downloading fonttools (4.7MiB)
+Downloading matplotlib (8.2MiB)
+Downloading pandas (11.4MiB)
+ Downloading kiwisolver
+ Downloading pillow
+ Downloading fonttools
+ Downloading matplotlib
+ Downloading pandas
+      Built cse599o-basics @ file:///homes/iws/yhruan22/au25-cse599o-hw2/cse599o-basics
+Installed 75 packages in 4.68s
+Arguments: Namespace(output_dir='../bench/allreduce', world_size=2, tensor_size=1, warmup_iters=5, benchmark_iters=10, use_gloo=False)
