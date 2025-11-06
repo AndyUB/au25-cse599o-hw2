@@ -1,0 +1,9 @@
+=== Mode: naive ===
+No checkpoint for naive mode, skipping verification.
+=== Mode: flat ===
+No checkpoint for flat mode, skipping verification.
+=== Mode: individual ===
+Verification passed for mode individual.
+Upper bound on max difference: 1e-05.
+=== Mode: bucketed ===
+No checkpoint for bucketed mode, skipping verification.

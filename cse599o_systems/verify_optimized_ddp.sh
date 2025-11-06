@@ -12,7 +12,7 @@ mkdir -p $CKPT_DIR
 
 uv run verify_optimized_ddp.py --mode baseline --ckpt-dir $CKPT_DIR > $LOG_DIR/baseline.log 2>&1
 
-modes=("naive" "flat")
+modes=("naive" "flat" "individual")
 for mode in "${modes[@]}"; do
     uv run benchmark_optimized_ddp.py --mode $mode \
         --ckpt-dir $CKPT_DIR \
