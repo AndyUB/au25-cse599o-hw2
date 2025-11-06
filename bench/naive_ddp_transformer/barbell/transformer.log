@@ -1,6 +1,56 @@
-Args: Namespace(model='transformer', verbose=True, toy_ckpt_path='toy_model_ckpt.pt', transformer_world_size=2, transformer_global_batch_size=8, transformer_context_length=256, transformer_rope_theta=10000, transformer_warmup_steps=2, transformer_benchmark_steps=5, transformer_log_dir='../bench/naive_ddp_transformer')
+Args: Namespace(model='transformer', verbose=True, toy_ckpt_path='toy_model_ckpt.pt', transformer_world_size=2, transformer_global_batch_size=8, transformer_context_length=128, transformer_rope_theta=10000, transformer_warmup_steps=2, transformer_benchmark_steps=5, transformer_log_dir='../bench/naive_ddp_transformer/barbell')
 399 broadcasts to sync 327 params and 72 buffers
-=== Naive DDP Transformer Benchmark Results ===
-(Rank 0) Per-iteration training time: 1029.32 ms
-(Rank 0) Per-iteration gradient communication time: 130.61 ms
-Fraction of gradient communication time in an iteration: 12.69%
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [712.5228881835938, 712.5634765625, 712.5773315429688, 712.5886840820312, 711.82470703125]
+(Rank 0) Gradient communication times (ms): [130.79335021972656, 130.73692321777344, 130.5149383544922, 130.52928161621094, 130.47853088378906]
+(Rank 0) Iteration time avg (std): 712.42 (0.30) ms
+(Rank 0) Gradient communication time avg (std): 130.61 (0.13) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 18.33%
+=== Rank 0 Extra Stats ===
+{
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        32798907840.44608,
+        32813064086.3728,
+        32868873816.943783,
+        32865262007.74879,
+        32878045230.450893
+    ],
+    "avg_communication_throughput_in_gbps": 30.589132193841476,
+    "std_communication_throughput_in_gbps": 0.030082559970185933,
+    "warmup_iteration_times_in_ms": [
+        1255.392822265625,
+        713.65771484375
+    ],
+    "warmup_communication_times_in_ms": [
+        139.8157501220703,
+        130.72998046875
+    ]
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [712.5691528320312, 712.5545043945312, 712.5646362304688, 712.5574340820312, 711.8665771484375]
+(Rank 1) Gradient communication times (ms): [131.7724151611328, 131.73146057128906, 132.24771118164062, 130.90147399902344, 130.94659423828125]
+(Rank 1) Iteration time avg (std): 712.42 (0.28) ms
+(Rank 1) Gradient communication time avg (std): 131.52 (0.52) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 18.46%
+=== Rank 1 Extra Stats ===
+{
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        32555212976.511715,
+        32565334213.981842,
+        32438210095.809544,
+        32771816152.597363,
+        32760523975.09309
+    ],
+    "avg_communication_throughput_in_gbps": 30.37808414809286,
+    "std_communication_throughput_in_gbps": 0.12000159598214435,
+    "warmup_iteration_times_in_ms": [
+        1255.3604736328125,
+        713.4984741210938
+    ],
+    "warmup_communication_times_in_ms": [
+        129.6691131591797,
+        131.9117431640625
+    ]
+}

@@ -1,0 +1,84 @@
+Arguments: Namespace(mode='flat', world_size=2, local_batch_size=4, context_length=128, verbose=True, bucket_size_mb=10)
+Mode: flat
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [707.6549072265625, 705.2392578125, 707.1722412109375, 708.19921875, 708.6203002929688]
+(Rank 0) Gradient communication times (ms): [111.94550323486328, 114.94371032714844, 111.28902435302734, 112.02130889892578, 112.32899475097656]
+(Rank 0) Iteration time avg (std): 707.38 (1.18) ms
+(Rank 0) Gradient communication time avg (std): 112.51 (1.27) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 15.90%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1270.8009033203125,
+        710.2075805664062
+    ],
+    "warmup_communication_times": [
+        113.33113861083984,
+        112.81417846679688
+    ],
+    "warmup_copy_times": [
+        15.071295738220215,
+        14.89305591583252
+    ],
+    "copy_times": [
+        14.866432189941406,
+        14.835712432861328,
+        14.86400032043457,
+        14.858240127563477,
+        14.851903915405273
+    ],
+    "copy_time_avg": 14.855257797241212,
+    "copy_time_std": 0.010986017024085965,
+    "copy_time_pct": 2.1000517786349855,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        38321137661.061485,
+        37321563988.06258,
+        38547188861.965294,
+        38295205458.37094,
+        38190309185.17772
+    ],
+    "avg_communication_throughput_in_gbps": 35.516061848893386,
+    "std_communication_throughput_in_gbps": 0.3940165721806161
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [707.6310424804688, 705.3394165039062, 707.1671142578125, 708.1455078125, 708.6336059570312]
+(Rank 1) Gradient communication times (ms): [117.44246673583984, 109.90045166015625, 111.78947448730469, 113.57791900634766, 114.00841522216797]
+(Rank 1) Iteration time avg (std): 707.38 (1.13) ms
+(Rank 1) Gradient communication time avg (std): 113.34 (2.51) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 16.02%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1270.615478515625,
+        710.2278442382812
+    ],
+    "warmup_communication_times": [
+        111.77983856201172,
+        114.55267333984375
+    ],
+    "warmup_copy_times": [
+        15.145055770874023,
+        14.876607894897461
+    ],
+    "copy_times": [
+        14.850432395935059,
+        14.858400344848633,
+        14.83737564086914,
+        14.845888137817383,
+        14.842080116271973
+    ],
+    "copy_time_avg": 14.846835327148437,
+    "copy_time_std": 0.007206710773615735,
+    "copy_time_pct": 2.0988452092358356,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        36527494348.77853,
+        39034225748.82165,
+        38374623905.108154,
+        37770361330.18291,
+        37627740300.04997
+    ],
+    "avg_communication_throughput_in_gbps": 35.26628867405303,
+    "std_communication_throughput_in_gbps": 0.7770777803920141
+}

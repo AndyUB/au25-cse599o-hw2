@@ -18,6 +18,8 @@
 # -------------------------------------------------------------
 
 import argparse
+from dataclasses import dataclass
+import json
 import numpy as np
 import os
 import torch
@@ -41,6 +43,9 @@ TRANSFORMER_ARGS = {
     "num_layers": 36,
     "num_heads": 20,
 }
+WORLD_SIZE = 2
+LOCAL_BATCH_SIZE = 4
+CONTEXT_LENGTH = 128
 
 
 def set_seed(seed):
@@ -110,6 +115,107 @@ def get_data_targets_shard(
         for target in target_list
     ]
     return data_shard, target_shard_list
+
+
+def get_model_dtype(model: torch.nn.Module) -> torch.dtype:
+    """Get the dtype of the model's parameters."""
+    dtype = None
+    for param in model.parameters():
+        if dtype is None:
+            dtype = param.dtype
+        else:
+            assert (
+                dtype == param.dtype
+            ), f"Model has mixed dtypes {dtype} and {param.dtype}"
+    assert dtype is not None, "Model has no parameters"
+    return dtype
+
+
+@dataclass
+class BenchmarkStats:
+    avg_step_time: float
+    std_step_time: float
+    avg_comm_time: float
+    std_comm_time: float
+    pct_comm_time: float
+
+
+def compute_stats(
+    rank: int,
+    bench_step_times: list[float],
+    bench_comm_times: list[float],
+    print_basic_stats: bool = True,
+    compute_extra_stats: bool = False,
+    print_extra_stats: bool = True,
+    warmup_step_times: list[float] | None = None,
+    warmup_comm_times: list[float] | None = None,
+    model: torch.nn.Module | None = None,
+    world_size: int | None = None,
+    extra_stats: dict | None = None,
+) -> tuple[BenchmarkStats, dict]:
+    """Compute benchmark statistics."""
+    if extra_stats is None:
+        extra_stats = {}
+
+    # Per-iteration communication and step time
+    avg_step_time = np.mean(bench_step_times)
+    std_step_time = np.std(bench_step_times)
+    avg_comm_time = np.mean(bench_comm_times)
+    std_comm_time = np.std(bench_comm_times)
+    pct_comm_time = 100 * np.mean(
+        [c / s for c, s in zip(bench_comm_times, bench_step_times)]
+    )
+    basic_stats = BenchmarkStats(
+        avg_step_time, std_step_time, avg_comm_time, std_comm_time, pct_comm_time
+    )
+
+    if print_basic_stats:
+        print(
+            f"=== Rank {rank} Results ===\n"
+            f"(Rank {rank}) Iteration times (ms): {bench_step_times}\n"
+            f"(Rank {rank}) Gradient communication times (ms): {bench_comm_times}\n"
+            f"(Rank {rank}) Iteration time avg (std): "
+            f"{avg_step_time:.2f} ({std_step_time:.2f}) ms\n"
+            f"(Rank {rank}) Gradient communication time avg (std): "
+            f"{avg_comm_time:.2f} ({std_comm_time:.2f}) ms\n"
+            f"(Rank {rank}) Fraction of gradient communication time "
+            f"in an iteration: {pct_comm_time:.2f}%"
+        )
+    if not compute_extra_stats:
+        return basic_stats, extra_stats
+
+    if model is not None and world_size is not None:
+        dtype_size_bytes = get_model_dtype(model).itemsize
+        total_allreduce_numel = 0
+        for param in model.parameters():
+            total_allreduce_numel += param.grad.data.numel()
+        total_grad_bytes = total_allreduce_numel * dtype_size_bytes
+        total_comm_vol_bytes = total_grad_bytes * 2 * (world_size - 1) / world_size
+        extra_stats["total_communication_volume_in_bytes"] = total_comm_vol_bytes
+
+        # Communication throughput in bytes per second
+        bench_comm_tputs_bps = [
+            total_comm_vol_bytes / (t / 1000) for t in bench_comm_times
+        ]
+        GB_SIZE = 1024**3
+        avg_comm_tput_gbps = np.mean(bench_comm_tputs_bps) / GB_SIZE
+        std_comm_tput_gbps = np.std(bench_comm_tputs_bps) / GB_SIZE
+        extra_stats["communication_throughputs_in_bytes_per_second"] = (
+            bench_comm_tputs_bps
+        )
+        extra_stats["avg_communication_throughput_in_gbps"] = avg_comm_tput_gbps
+        extra_stats["std_communication_throughput_in_gbps"] = std_comm_tput_gbps
+
+    if warmup_step_times is not None:
+        extra_stats["warmup_iteration_times_in_ms"] = warmup_step_times
+    if warmup_comm_times is not None:
+        extra_stats["warmup_communication_times_in_ms"] = warmup_comm_times
+
+    if print_extra_stats:
+        extra_stats_str = json.dumps(extra_stats, indent=4)
+        print(f"=== Rank {rank} Extra Stats ===\n{extra_stats_str}")
+
+    return basic_stats, extra_stats
 
 
 def run_naive_ddp_worker(
@@ -317,12 +423,7 @@ def run_transformer_worker(
         # Naively all-reduce each parameter's gradient
         # Parameters are iterated in the same order on all processes
         for param in model.parameters():
-            if param.grad is None:
-                print(
-                    f"Rank {rank} found None grad for param "
-                    f"with shape {param.shape}, skipping all-reduce"
-                )
-                continue
+            assert param.grad is not None
             dist.all_reduce(param.grad.data, op=dist.ReduceOp.SUM)
             param.grad.data /= world_size
         comm_end_ev.record()
@@ -339,10 +440,22 @@ def run_transformer_worker(
 
     dist.destroy_process_group()
 
-    stats = None
+    stats, _ = compute_stats(
+        rank,
+        step_times[warmup_steps:],
+        comm_times[warmup_steps:],
+        print_basic_stats=True,
+        compute_extra_stats=verbose,
+        print_extra_stats=verbose,
+        warmup_step_times=step_times[:warmup_steps],
+        warmup_comm_times=comm_times[:warmup_steps],
+        model=model,
+        world_size=world_size,
+    )
+
     if log_dir is not None:
         os.makedirs(log_dir, exist_ok=True)
-        with open(os.path.join(log_dir, f"rank_{rank}.csv"), "w") as f:
+        with open(os.path.join(log_dir, f"rank{rank}.csv"), "w") as f:
             f.write("iter,step_time(ms),comm_time(ms)\n")
 
             for i in range(warmup_steps):
@@ -353,32 +466,10 @@ def run_transformer_worker(
                     f"{comm_times[warmup_steps + i]}\n"
                 )
 
-            avg_step_time = np.mean(step_times[warmup_steps:])
-            std_step_time = np.std(step_times[warmup_steps:])
-            avg_comm_time = np.mean(comm_times[warmup_steps:])
-            std_comm_time = np.std(comm_times[warmup_steps:])
-            stats = (avg_step_time, avg_comm_time)
             f.write(
-                f"avg,{avg_step_time},{avg_comm_time}\n"
-                f"std,{std_step_time},{std_comm_time}\n"
+                f"avg,{stats.avg_step_time},{stats.avg_comm_time}\n"
+                f"std,{stats.std_step_time},{stats.std_comm_time}\n"
             )
-
-    if rank == 0:
-        # Print per-iteration communication and step time
-        if stats is None:
-            avg_step_time = np.mean(step_times[warmup_steps:])
-            avg_comm_time = np.mean(comm_times[warmup_steps:])
-        else:
-            avg_step_time, avg_comm_time = stats
-        print(
-            "=== Naive DDP Transformer Benchmark Results ===\n"
-            "(Rank 0) Per-iteration training time: "
-            f"{avg_step_time:.2f} ms\n"
-            "(Rank 0) Per-iteration gradient communication time: "
-            f"{avg_comm_time:.2f} ms\n"
-            "Fraction of gradient communication time in an iteration: "
-            f"{100 * avg_comm_time / avg_step_time:.2f}%"
-        )
 
 
 def time_naive_ddp(
@@ -428,20 +519,65 @@ def time_naive_ddp(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", choices=["toy", "transformer"], default="toy")
+    parser.add_argument(
+        "--model",
+        choices=["toy", "transformer"],
+        default="toy",
+        help="Verify with toy model or benchmark with transformer model.",
+    )
     parser.add_argument("--verbose", action="store_true")
 
     # Toy model arguments
-    parser.add_argument("--toy_ckpt_path", type=str, default="toy_model_ckpt.pt")
+    parser.add_argument(
+        "--toy_ckpt_path",
+        type=str,
+        default="toy_model_ckpt.pt",
+        help="Path to checkpoint file for toy model.",
+    )
 
     # Transformer model arguments
-    parser.add_argument("--transformer_world_size", type=int, default=2)
-    parser.add_argument("--transformer_global_batch_size", type=int, default=8)
-    parser.add_argument("--transformer_context_length", type=int, default=256)
-    parser.add_argument("--transformer_rope_theta", type=float, default=10000)
-    parser.add_argument("--transformer_warmup_steps", type=int, default=2)
-    parser.add_argument("--transformer_benchmark_steps", type=int, default=5)
-    parser.add_argument("--transformer_log_dir", type=str, default=None)
+    parser.add_argument(
+        "--transformer_world_size",
+        type=int,
+        default=WORLD_SIZE,
+        help="Number of processes / GPUs for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_global_batch_size",
+        type=int,
+        default=LOCAL_BATCH_SIZE * WORLD_SIZE,
+        help="Global batch size for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_context_length",
+        type=int,
+        default=CONTEXT_LENGTH,
+        help="Context length for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_rope_theta",
+        type=float,
+        default=10000,
+        help="RoPE theta for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_warmup_steps",
+        type=int,
+        default=2,
+        help="Number of warmup steps for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_benchmark_steps",
+        type=int,
+        default=5,
+        help="Number of benchmark steps for transformer benchmark.",
+    )
+    parser.add_argument(
+        "--transformer_log_dir",
+        type=str,
+        default=None,
+        help="Log directory to save results for transformer benchmark.",
+    )
     args = parser.parse_args()
 
     if args.verbose:

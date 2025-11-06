@@ -4,9 +4,9 @@
 #
 # Extend your DDP benchmark to evaluate three optimized variants
 # for the Transformer model:
-#   (1) run_flat       
-#   (2) run_individual 
-#   (3) run_bucketed   
+#   (1) run_flat
+#   (2) run_individual
+#   (3) run_bucketed
 #
 # The TA will execute your script using commands like:
 #     srun --gpus-per-node=2 uv run benchmark_optimized_ddp.py --mode flat
@@ -19,109 +19,377 @@
 # -------------------------------------------------------------
 
 import argparse
+import json
+import numpy as np
+import os
 import torch
 import torch.distributed as dist
-# Any other necessary imports can be added here.
+import torch.multiprocessing as mp
+from cse599o_basics.util import AdamW, cross_entropy_loss
+from cse599o_basics.transformer import Transformer
 
-# Any necessary helper functions can be defined here.
+from benchmark_naive_ddp import (
+    SEED,
+    TRANSFORMER_ARGS,
+    ADAMW_ARGS,
+    WORLD_SIZE,
+    LOCAL_BATCH_SIZE,
+    CONTEXT_LENGTH,
+    set_seed,
+    get_model_dtype,
+    compute_stats,
+)
 
-# You can change the function and variable names as needed.
-def setup(rank, world_size):
+
+def dist_setup(rank: int, world_size: int) -> None:
     os.environ["MASTER_ADDR"] = "localhost"
-    os.environ["MASTER_PORT"] = "29500"
+    os.environ["MASTER_PORT"] = "12888"
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
     torch.cuda.set_device(rank)
+
+
+def dist_cleanup() -> None:
+    dist.destroy_process_group()
+
 
 # ============================================================
 # (0) Naive DDP
 # ============================================================
-# You can change the function and variable names as needed.
-def run_naive(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times):
+def run_naive(
+    model: torch.nn.Module,
+    data: tuple[torch.Tensor, torch.Tensor],
+    optimizer: torch.optim.Optimizer,
+    num_iters: int,
+    num_warmup: int,
+    iteration_times: list[float],
+    comm_times: list[float],
+) -> dict:
     """A naive DDP training loop for reference."""
-    # TODO:
-    pass
+    input_ids, target_ids = data
+
+    warmup_iter_times = []
+    warmup_comm_times = []
+    for _ in range(num_iters + num_warmup):
+        iter_start_ev = torch.cuda.Event(enable_timing=True)
+        iter_end_ev = torch.cuda.Event(enable_timing=True)
+        comm_start_ev = torch.cuda.Event(enable_timing=True)
+        comm_end_ev = torch.cuda.Event(enable_timing=True)
+
+        torch.cuda.synchronize()
+        iter_start_ev.record()
+        optimizer.zero_grad()
+        logits = model(input_ids)
+        loss = cross_entropy_loss(logits, target_ids)
+        loss.backward()
+
+        comm_start_ev.record()
+        for param in model.parameters():
+            assert param.grad is not None
+            dist.all_reduce(param.grad, op=dist.ReduceOp.SUM)
+            param.grad /= WORLD_SIZE
+        comm_end_ev.record()
+
+        optimizer.step()
+        iter_end_ev.record()
+        iter_end_ev.synchronize()
+        torch.cuda.synchronize()
+
+        # Times in milliseconds
+        iter_time = iter_start_ev.elapsed_time(iter_end_ev)
+        comm_time = comm_start_ev.elapsed_time(comm_end_ev)
+        if _ >= num_warmup:
+            iteration_times.append(iter_time)
+            comm_times.append(comm_time)
+        else:
+            warmup_iter_times.append(iter_time)
+            warmup_comm_times.append(comm_time)
+
+    extra_stats = {
+        "warmup_iteration_times": warmup_iter_times,
+        "warmup_communication_times": warmup_comm_times,
+    }
+    return extra_stats
+
 
 # ============================================================
 # (1) Flat DDP
 # ============================================================
-# You can change the function and variable names as needed.
-def run_flat(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times):
+def run_flat(
+    model: torch.nn.Module,
+    data: tuple[torch.Tensor, torch.Tensor],
+    optimizer: torch.optim.Optimizer,
+    num_iters: int,
+    num_warmup: int,
+    iteration_times: list[float],
+    comm_times: list[float],
+) -> dict:
     """All-reduce a single flattened gradient tensor."""
-    # TODO:
-    pass
+    input_ids, target_ids = data
+
+    copy_times = []
+    warmup_iter_times = []
+    warmup_comm_times = []
+    warmup_copy_times = []
+
+    dtype = get_model_dtype(model)
+    flat_tensor_size = sum(param.numel() for param in model.parameters())
+    flat_grad = torch.empty(
+        flat_tensor_size,
+        dtype=dtype,
+        device=input_ids.device,
+        requires_grad=False,
+    )
+
+    for _ in range(num_iters + num_warmup):
+        iter_start_ev = torch.cuda.Event(enable_timing=True)
+        iter_end_ev = torch.cuda.Event(enable_timing=True)
+        comm_start_ev = torch.cuda.Event(enable_timing=True)
+        comm_end_ev = torch.cuda.Event(enable_timing=True)
+        copy_start_ev = torch.cuda.Event(enable_timing=True)
+        copy_end_ev = torch.cuda.Event(enable_timing=True)
+
+        torch.cuda.synchronize()
+        iter_start_ev.record()
+        optimizer.zero_grad()
+        logits = model(input_ids)
+        loss = cross_entropy_loss(logits, target_ids)
+        loss.backward()
+
+        copy_start_ev.record()
+        # Copy gradients into flat tensor
+        offset = 0
+        for param in model.parameters():
+            assert param.grad is not None
+            numel = param.grad.numel()
+            flat_grad[offset : offset + numel].copy_(param.grad.reshape(-1))
+            param.grad = flat_grad[offset : offset + numel].view_as(param)
+            offset += numel
+        copy_end_ev.record()
+
+        comm_start_ev.record()
+        dist.all_reduce(flat_grad, op=dist.ReduceOp.SUM)
+        flat_grad /= WORLD_SIZE
+        comm_end_ev.record()
+
+        optimizer.step()
+        iter_end_ev.record()
+        iter_end_ev.synchronize()
+        torch.cuda.synchronize()
+
+        # Times in milliseconds
+        iter_time = iter_start_ev.elapsed_time(iter_end_ev)
+        comm_time = comm_start_ev.elapsed_time(comm_end_ev)
+        copy_time = copy_start_ev.elapsed_time(copy_end_ev)
+        if _ >= num_warmup:
+            iteration_times.append(iter_time)
+            comm_times.append(comm_time)
+            copy_times.append(copy_time)
+        else:
+            warmup_iter_times.append(iter_time)
+            warmup_comm_times.append(comm_time)
+            warmup_copy_times.append(copy_time)
+
+    avg_copy_time = np.mean(copy_times)
+    std_copy_time = np.std(copy_times)
+    pct_copy_time = 100 * np.mean(
+        [ct / it for ct, it in zip(copy_times, iteration_times)]
+    )
+    extra_stats = {
+        "warmup_iteration_times": warmup_iter_times,
+        "warmup_communication_times": warmup_comm_times,
+        "warmup_copy_times": warmup_copy_times,
+        "copy_times": copy_times,
+        "copy_time_avg": avg_copy_time,
+        "copy_time_std": std_copy_time,
+        "copy_time_pct": pct_copy_time,
+    }
+    return extra_stats
 
 
 # ============================================================
 # (2) Individual DDP
 # ============================================================
-# You can change the function and variable names as needed.
-def run_individual(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times):
+def run_individual(
+    model: torch.nn.Module,
+    data: tuple[torch.Tensor, torch.Tensor],
+    optimizer: torch.optim.Optimizer,
+    num_iters: int,
+    num_warmup: int,
+    iteration_times: list[float],
+    comm_times: list[float],
+) -> dict:
     """All-reduce each parameter's gradient individually."""
-    # TODO:
-    pass
 
 
 # ============================================================
 # (3) Bucketed DDP
 # ============================================================
-# You can change the function and variable names as needed.
-def run_bucketed(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times, bucket_mb):
+def run_bucketed(
+    model: torch.nn.Module,
+    data: tuple[torch.Tensor, torch.Tensor],
+    optimizer: torch.optim.Optimizer,
+    num_iters: int,
+    num_warmup: int,
+    iteration_times: list[float],
+    comm_times: list[float],
+    bucket_size_mb: int,
+) -> dict:
     """Group gradients into buckets and all-reduce each bucket."""
-    # TODO:
-    pass
 
 
 # ============================================================
 # Benchmark Function
 # ============================================================
 # You can change the function and variable names as needed.
-def benchmark_optimized_ddp():
+def benchmark_optimized_ddp(
+    rank: int,
+    mode: str,
+    global_seqs: torch.Tensor,
+    local_batch_size: int,
+    context_length: int,
+    verbose: bool,
+    bucket_size_mb: int,
+) -> None:
     """Benchmark DDP variants on the Transformer model."""
+    num_iters, num_warmup = 5, 2
+    # Times in milliseconds
+    iter_times, comm_times = [], []
+
+    # DDP setup
+    # Initialize distributed process group
+    assert global_seqs.size(0) % local_batch_size == 0
+    world_size = global_seqs.size(0) // local_batch_size
+    dist_setup(rank, world_size)
+    device = torch.device(f"cuda:{rank}")
+
+    # Construct model and move to GPU
+    model = Transformer(
+        context_length=context_length,
+        device=device,
+        **TRANSFORMER_ARGS,
+    ).to(device)
+    # Sync params and buffers
+    for param in model.parameters():
+        dist.broadcast(param.data, src=0)
+    for buffer in model.buffers():
+        dist.broadcast(buffer.data, src=0)
+
+    # Construct optimizer
+    optimizer = AdamW(model.parameters(), **ADAMW_ARGS)
+
+    # Get input data
+    start_idx = rank * local_batch_size
+    end_idx = start_idx + local_batch_size
+    seqs = global_seqs[start_idx:end_idx]
+    input_ids = seqs[:, :context_length].to(device)
+    target_ids = seqs[:, 1 : context_length + 1].to(device)
+    data = (input_ids, target_ids)
+
+    if rank == 0:
+        print(f"Mode: {mode}")
+    run_fn = None
+    extra_args = {}
+    if mode == "naive":
+        run_fn = run_naive
+    elif mode == "flat":
+        run_fn = run_flat
+    elif mode == "individual":
+        run_fn = run_individual
+    elif mode == "bucketed":
+        run_fn = run_bucketed
+        extra_args["bucket_size_mb"] = bucket_size_mb
+    assert run_fn is not None, f"Invalid mode: {mode}"
+
+    extra_stats = run_fn(
+        model,
+        data,
+        optimizer,
+        num_iters,
+        num_warmup,
+        iter_times,
+        comm_times,
+        **extra_args,
+    )
+
+    dist_cleanup()
+
+    compute_stats(
+        rank,
+        bench_step_times=iter_times,
+        bench_comm_times=comm_times,
+        print_basic_stats=True,
+        compute_extra_stats=verbose,
+        print_extra_stats=verbose,
+        model=model,
+        world_size=WORLD_SIZE,
+        extra_stats=extra_stats,
+    )
+
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Benchmark optimized DDP variants.")
     parser.add_argument(
         "--mode",
         type=str,
         default="flat",
-        choices=["flat", "individual", "bucketed"],
+        choices=["naive", "flat", "individual", "bucketed"],
         help="Select which DDP variant to benchmark.",
     )
     parser.add_argument(
-        "--bucket-mb",
+        "--world-size",
+        type=int,
+        default=WORLD_SIZE,
+        help="Number of processes for distributed training.",
+    )
+    parser.add_argument(
+        "--local-batch-size",
+        type=int,
+        default=LOCAL_BATCH_SIZE,
+        help="Local batch size per GPU.",
+    )
+    parser.add_argument(
+        "--context-length",
+        type=int,
+        default=CONTEXT_LENGTH,
+        help="Context length for the Transformer model.",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging.",
+    )
+
+    parser.add_argument(
+        "--bucket-size-mb",
         type=int,
         default=10,
         help="Bucket size (in MB) for the bucketed DDP variant.",
     )
     args = parser.parse_args()
+    if args.verbose:
+        print(f"Arguments: {args}")
 
-    # Example placeholders
-    num_iters, num_warmup = 5, 2
-    iteration_times, comm_times = [], []
-    
-    # DDP setup
-    # TODO: Initialize distributed process group
+    set_seed(SEED)
+    global_seqs = torch.randint(
+        low=0,
+        high=TRANSFORMER_ARGS["vocab_size"],
+        size=(
+            args.world_size * args.local_batch_size,
+            args.context_length + 1,
+        ),
+    ).cpu()
 
-    # Construct model and move to GPU
-    # TODO: Define model parameters
-
-    # Construct optimizer
-    # TODO: Define optimizer
-    
-    # Dummy data
-    # TODO: Create input data
-
-    if args.mode == "naive":
-        run_naive(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times)
-    elif args.mode == "flat":
-        run_flat(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times)
-    elif args.mode == "individual":
-        run_individual(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times)
-    elif args.mode == "bucketed":
-        run_bucketed(model, data, optimizer, num_iters, num_warmup, iteration_times, comm_times, args.bucket_mb)
-
-    print(f"Mode: {args.mode}")
-    print(f"Iteration times: {iteration_times}")
-    print(f"Communication times: {comm_times}")
-
-
-if __name__ == "__main__":
-    benchmark_optimized_ddp()
+    mp.set_start_method("spawn", force=True)
+    mp.spawn(
+        benchmark_optimized_ddp,
+        args=(
+            args.mode,
+            global_seqs,
+            args.local_batch_size,
+            args.context_length,
+            args.verbose,
+            args.bucket_size_mb,
+        ),
+        nprocs=args.world_size,
+        join=True,
+    )

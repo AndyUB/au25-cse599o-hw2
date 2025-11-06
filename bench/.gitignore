@@ -1,3 +1,1 @@
-!allreduce/**/*
-!naive_ddp_toy/**/*
-!naive_ddp_transformer/**/*
+!*
