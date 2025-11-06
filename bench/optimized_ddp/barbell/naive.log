@@ -1,56 +1,56 @@
-Arguments: Namespace(mode='naive', world_size=2, local_batch_size=4, context_length=128, verbose=True, bucket_size_mb=10)
-Mode: naive
-=== Rank 0 Results ===
-(Rank 0) Iteration times (ms): [711.260009765625, 711.92578125, 712.2505493164062, 712.6154174804688, 712.8451538085938]
-(Rank 0) Gradient communication times (ms): [130.49008178710938, 130.55795288085938, 130.5149383544922, 130.42381286621094, 130.71359252929688]
-(Rank 0) Iteration time avg (std): 712.18 (0.56) ms
-(Rank 0) Gradient communication time avg (std): 130.54 (0.10) ms
-(Rank 0) Fraction of gradient communication time in an iteration: 18.33%
-=== Rank 0 Extra Stats ===
-{
-    "warmup_iteration_times": [
-        1280.468994140625,
-        713.973876953125
-    ],
-    "warmup_communication_times": [
-        130.1175994873047,
-        130.48626708984375
-    ],
-    "total_communication_volume_in_bytes": 4289879040.0,
-    "communication_throughputs_in_bytes_per_second": [
-        32875134885.721104,
-        32858044610.38638,
-        32868873816.943783,
-        32891838888.352146,
-        32818920794.625916
-    ],
-    "avg_communication_throughput_in_gbps": 30.605646408354737,
-    "std_communication_throughput_in_gbps": 0.02273653613466495
-}
+Arguments: Namespace(mode='naive', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir='../bench/optimized_ddp/barbell/ckpt', bucket_size_mb=10)
 === Rank 1 Results ===
-(Rank 1) Iteration times (ms): [711.337890625, 711.9523315429688, 712.2377319335938, 712.6384887695312, 712.7388305664062]
-(Rank 1) Gradient communication times (ms): [131.23992919921875, 132.2659912109375, 132.13107299804688, 132.42982482910156, 133.90057373046875]
-(Rank 1) Iteration time avg (std): 712.18 (0.51) ms
-(Rank 1) Gradient communication time avg (std): 132.39 (0.86) ms
-(Rank 1) Fraction of gradient communication time in an iteration: 18.59%
+(Rank 1) Iteration times (ms): [713.7628784179688, 713.0188598632812, 713.535400390625, 712.796142578125, 712.0991821289062]
+(Rank 1) Gradient communication times (ms): [132.186279296875, 131.19110107421875, 132.49945068359375, 131.09353637695312, 131.1129608154297]
+(Rank 1) Iteration time avg (std): 713.04 (0.59) ms
+(Rank 1) Gradient communication time avg (std): 131.62 (0.60) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 18.46%
 === Rank 1 Extra Stats ===
 {
     "warmup_iteration_times": [
-        1280.4368896484375,
-        713.881591796875
+        1235.08935546875,
+        713.4459228515625
     ],
     "warmup_communication_times": [
-        151.88339233398438,
-        132.92604064941406
+        141.15635681152344,
+        132.02890014648438
     ],
     "total_communication_volume_in_bytes": 4289879040.0,
     "communication_throughputs_in_bytes_per_second": [
-        32687300779.38458,
-        32433726921.97582,
-        32466844797.842606,
-        32393602011.75238,
-        32037794316.21545
+        32453285339.588318,
+        32699466693.04259,
+        32376579811.218628,
+        32723802855.273205,
+        32718954810.569393
     ],
-    "avg_communication_throughput_in_gbps": 30.178440516287615,
-    "std_communication_throughput_in_gbps": 0.1950479894968535
+    "avg_communication_throughput_in_gbps": 30.35591719852614,
+    "std_communication_throughput_in_gbps": 0.1385493697842111
+}
+Mode: naive
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [713.7360229492188, 713.0439453125, 713.4507446289062, 712.85693359375, 712.0197143554688]
+(Rank 0) Gradient communication times (ms): [130.77503967285156, 130.7466278076172, 130.79705810546875, 130.6414794921875, 130.73341369628906]
+(Rank 0) Iteration time avg (std): 713.02 (0.59) ms
+(Rank 0) Gradient communication time avg (std): 130.74 (0.05) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 18.34%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1235.172607421875,
+        713.57861328125
+    ],
+    "warmup_communication_times": [
+        130.1420135498047,
+        130.41583251953125
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        32803500199.515244,
+        32810628556.4183,
+        32797978044.28322,
+        32837036572.726044,
+        32813944948.80975
+    ],
+    "avg_communication_throughput_in_gbps": 30.55913156303625,
+    "std_communication_throughput_in_gbps": 0.012491170858030618
 }

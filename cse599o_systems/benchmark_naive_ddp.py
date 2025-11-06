@@ -188,7 +188,7 @@ def compute_stats(
         dtype_size_bytes = get_model_dtype(model).itemsize
         total_allreduce_numel = 0
         for param in model.parameters():
-            total_allreduce_numel += param.grad.data.numel()
+            total_allreduce_numel += param.numel()
         total_grad_bytes = total_allreduce_numel * dtype_size_bytes
         total_comm_vol_bytes = total_grad_bytes * 2 * (world_size - 1) / world_size
         extra_stats["total_communication_volume_in_bytes"] = total_comm_vol_bytes

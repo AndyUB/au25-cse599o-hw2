@@ -19,7 +19,6 @@
 # -------------------------------------------------------------
 
 import argparse
-import json
 import numpy as np
 import os
 import torch
@@ -39,6 +38,9 @@ from benchmark_naive_ddp import (
     get_model_dtype,
     compute_stats,
 )
+
+NUM_WARMUP = 2
+NUM_ITERS = 5
 
 
 def dist_setup(rank: int, world_size: int) -> None:
@@ -219,6 +221,7 @@ def run_individual(
     comm_times: list[float],
 ) -> dict:
     """All-reduce each parameter's gradient individually."""
+    raise NotImplementedError("Implement run_individual function.")
 
 
 # ============================================================
@@ -235,6 +238,7 @@ def run_bucketed(
     bucket_size_mb: int,
 ) -> dict:
     """Group gradients into buckets and all-reduce each bucket."""
+    raise NotImplementedError("Implement run_bucketed function.")
 
 
 # ============================================================
@@ -248,10 +252,11 @@ def benchmark_optimized_ddp(
     local_batch_size: int,
     context_length: int,
     verbose: bool,
+    ckpt_dir: str | None,
     bucket_size_mb: int,
 ) -> None:
     """Benchmark DDP variants on the Transformer model."""
-    num_iters, num_warmup = 5, 2
+    num_iters, num_warmup = NUM_ITERS, NUM_WARMUP
     # Times in milliseconds
     iter_times, comm_times = [], []
 
@@ -268,11 +273,17 @@ def benchmark_optimized_ddp(
         device=device,
         **TRANSFORMER_ARGS,
     ).to(device)
-    # Sync params and buffers
-    for param in model.parameters():
-        dist.broadcast(param.data, src=0)
-    for buffer in model.buffers():
-        dist.broadcast(buffer.data, src=0)
+    if ckpt_dir is None:
+        # Sync params and buffers
+        for param in model.parameters():
+            dist.broadcast(param.data, src=0)
+        for buffer in model.buffers():
+            dist.broadcast(buffer.data, src=0)
+    else:
+        start_ckpt_path = os.path.join(ckpt_dir, "start.pt")
+        assert os.path.exists(start_ckpt_path)
+        # Load checkpoint
+        model.load_state_dict(torch.load(start_ckpt_path, map_location=device))
 
     # Construct optimizer
     optimizer = AdamW(model.parameters(), **ADAMW_ARGS)
@@ -325,6 +336,11 @@ def benchmark_optimized_ddp(
         extra_stats=extra_stats,
     )
 
+    if rank == 0 and ckpt_dir is not None:
+        os.makedirs(ckpt_dir, exist_ok=True)
+        ckpt_path = os.path.join(ckpt_dir, f"{mode}.pt")
+        torch.save(model.state_dict(), ckpt_path)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Benchmark optimized DDP variants.")
@@ -358,6 +374,17 @@ if __name__ == "__main__":
         action="store_true",
         help="Enable verbose logging.",
     )
+    parser.add_argument(
+        "--ckpt-dir",
+        type=str,
+        default=None,
+        help="Path to the checkpoint directory. "
+        "Specifying this will load the `start.pt` checkpoint "
+        "inside the directory as the initial model state, "
+        "and the training data will be loaded from the "
+        "`data.pt` file. After training, the model state is "
+        "saved in the same directory in `<mode>.pt`.",
+    )
 
     parser.add_argument(
         "--bucket-size-mb",
@@ -370,14 +397,25 @@ if __name__ == "__main__":
         print(f"Arguments: {args}")
 
     set_seed(SEED)
-    global_seqs = torch.randint(
-        low=0,
-        high=TRANSFORMER_ARGS["vocab_size"],
-        size=(
-            args.world_size * args.local_batch_size,
-            args.context_length + 1,
-        ),
-    ).cpu()
+    data_shape = (
+        args.world_size * args.local_batch_size,
+        args.context_length + 1,
+    )
+    if args.ckpt_dir is not None:
+        assert os.path.exists(os.path.join(args.ckpt_dir, "start.pt"))
+        data_path = os.path.join(args.ckpt_dir, "data.pt")
+        assert os.path.exists(data_path)
+
+        # Load data from checkpoint directory
+        global_seqs: torch.Tensor = torch.load(data_path).cpu()
+        assert global_seqs.shape == data_shape
+    else:
+        # Generate random data
+        global_seqs = torch.randint(
+            low=0,
+            high=TRANSFORMER_ARGS["vocab_size"],
+            size=data_shape,
+        ).cpu()
 
     mp.set_start_method("spawn", force=True)
     mp.spawn(
@@ -388,6 +426,7 @@ if __name__ == "__main__":
             args.local_batch_size,
             args.context_length,
             args.verbose,
+            args.ckpt_dir,
             args.bucket_size_mb,
         ),
         nprocs=args.world_size,
