@@ -1,0 +1,67 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+Arguments: Namespace(mode='naive', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: naive
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [718.5493774414062, 718.7725219726562, 717.3675537109375, 717.9767456054688, 717.9276733398438]
+(Rank 0) Gradient communication times (ms): [130.8640594482422, 131.07705688476562, 130.89593505859375, 131.60365295410156, 131.04217529296875]
+(Rank 0) Iteration time avg (std): 718.12 (0.50) ms
+(Rank 0) Gradient communication time avg (std): 131.10 (0.27) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 18.26%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1351.47802734375,
+        719.9629516601562
+    ],
+    "warmup_communication_times": [
+        148.8219451904297,
+        131.42950439453125
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        32781185744.10174,
+        32727917012.749084,
+        32773202911.761124,
+        32596960218.848557,
+        32736628725.898293
+    ],
+    "avg_communication_throughput_in_gbps": 30.475835243865625,
+    "std_communication_throughput_in_gbps": 0.061779335763742844
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [718.6365966796875, 718.8092041015625, 717.333251953125, 717.8611450195312, 717.929443359375]
+(Rank 1) Gradient communication times (ms): [132.9215087890625, 132.10153198242188, 131.15673828125, 130.80870056152344, 131.6439666748047]
+(Rank 1) Iteration time avg (std): 718.11 (0.54) ms
+(Rank 1) Gradient communication time avg (std): 131.73 (0.74) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 18.34%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1351.402587890625,
+        719.9267578125
+    ],
+    "warmup_communication_times": [
+        129.97625732421875,
+        133.2183074951172
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        32273776299.122135,
+        32474105149.445454,
+        32708033885.387314,
+        32795058903.4583,
+        32586977955.451103
+    ],
+    "avg_communication_throughput_in_gbps": 30.330932176274114,
+    "std_communication_throughput_in_gbps": 0.17015871968172544
+}
+Collecting data...
+Generating '/tmp/nsys-report-5f36.qdstrm'
+[1/1] [0%                          ] naive.nsys-rep[1/1] [0%                          ] naive.nsys-rep[1/1] [0%                          ] naive.nsys-rep[1/1] [5%                          ] naive.nsys-rep[1/1] [8%                          ] naive.nsys-rep[1/1] [10%                         ] naive.nsys-rep[1/1] [13%                         ] naive.nsys-rep[1/1] [14%                         ] naive.nsys-rep[1/1] [=17%                        ] naive.nsys-rep[1/1] [==19%                       ] naive.nsys-rep[1/1] [==21%                       ] naive.nsys-rep[1/1] [===23%                      ] naive.nsys-rep[1/1] [====25%                     ] naive.nsys-rep[1/1] [====28%                     ] naive.nsys-rep[1/1] [=====29%                    ] naive.nsys-rep[1/1] [=====31%                    ] naive.nsys-rep[1/1] [======34%                   ] naive.nsys-rep[1/1] [=======36%                  ] naive.nsys-rep[1/1] [=======38%                  ] naive.nsys-rep[1/1] [========40%                 ] naive.nsys-rep[1/1] [========42%                 ] naive.nsys-rep[1/1] [=========44%                ] naive.nsys-rep[1/1] [=========46%                ] naive.nsys-rep[1/1] [==========48%               ] naive.nsys-rep[1/1] [===========50%              ] naive.nsys-rep[1/1] [===========52%              ] naive.nsys-rep[1/1] [============54%             ] naive.nsys-rep[1/1] [============56%             ] naive.nsys-rep[1/1] [=============58%            ] naive.nsys-rep[1/1] [=============60%            ] naive.nsys-rep[1/1] [==============62%           ] naive.nsys-rep[1/1] [==============64%           ] naive.nsys-rep[1/1] [===============66%          ] naive.nsys-rep[1/1] [================68%         ] naive.nsys-rep[1/1] [================70%         ] naive.nsys-rep[1/1] [=================72%        ] naive.nsys-rep[1/1] [=================74%        ] naive.nsys-rep[1/1] [==================76%       ] naive.nsys-rep[1/1] [==================78%       ] naive.nsys-rep[1/1] [===================80%      ] naive.nsys-rep[1/1] [========================100%] naive.nsys-rep[1/1] [========================100%] naive.nsys-rep
+Generated:
+    /home/yhruan/courses/599o/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/barbell_nsys/naive.nsys-rep
