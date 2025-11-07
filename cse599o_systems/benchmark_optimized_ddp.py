@@ -38,7 +38,7 @@ from benchmark_naive_ddp import (
     get_model_dtype,
     compute_stats,
 )
-from ddp import DDPIndividualParameters
+from ddp import DDPBucketed, DDPIndividualParameters
 
 NUM_WARMUP = 2
 NUM_ITERS = 5
@@ -286,7 +286,54 @@ def run_bucketed(
     bucket_size_mb: int,
 ) -> dict:
     """Group gradients into buckets and all-reduce each bucket."""
-    raise NotImplementedError("Implement run_bucketed function.")
+    input_ids, target_ids = data
+    ddp_model = DDPBucketed(model, bucket_size_mb=bucket_size_mb)
+
+    warmup_iter_times = []
+    warmup_comm_times = []
+    if dist.get_rank() == 0:
+        print(
+            "[Note] All-reduce communication is overlapped with the backward pass "
+            "so backward computation happens concurrently with the period that is "
+            "measured as the communication time."
+        )
+    for _ in range(num_iters + num_warmup):
+        iter_start_ev = torch.cuda.Event(enable_timing=True)
+        iter_end_ev = torch.cuda.Event(enable_timing=True)
+        comm_start_ev = torch.cuda.Event(enable_timing=True)
+        comm_end_ev = torch.cuda.Event(enable_timing=True)
+
+        torch.cuda.synchronize()
+        iter_start_ev.record()
+        optimizer.zero_grad()
+        logits = ddp_model(input_ids)
+        loss = cross_entropy_loss(logits, target_ids)
+
+        comm_start_ev.record()
+        loss.backward()
+        ddp_model.finish_gradient_synchronization()
+        comm_end_ev.record()
+
+        optimizer.step()
+        iter_end_ev.record()
+        iter_end_ev.synchronize()
+        torch.cuda.synchronize()
+
+        # Times in milliseconds
+        iter_time = iter_start_ev.elapsed_time(iter_end_ev)
+        comm_time = comm_start_ev.elapsed_time(comm_end_ev)
+        if _ >= num_warmup:
+            iteration_times.append(iter_time)
+            comm_times.append(comm_time)
+        else:
+            warmup_iter_times.append(iter_time)
+            warmup_comm_times.append(comm_time)
+
+    extra_stats = {
+        "warmup_iteration_times": warmup_iter_times,
+        "warmup_communication_times": warmup_comm_times,
+    }
+    return extra_stats
 
 
 # ============================================================

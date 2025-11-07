@@ -7,7 +7,7 @@ HOSTNAME=${1:-tempura}
 LOG_DIR=../bench/optimized_ddp/$HOSTNAME
 mkdir -p $LOG_DIR
 
-modes=("naive" "flat" "individual")
+modes=("naive" "flat" "individual" "bucketed")
 for mode in "${modes[@]}"; do
     uv run nsys profile -o $LOG_DIR/$mode \
         python benchmark_optimized_ddp.py --mode $mode \

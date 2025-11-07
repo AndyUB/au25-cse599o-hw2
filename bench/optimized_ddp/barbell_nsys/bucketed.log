@@ -1,0 +1,68 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+Arguments: Namespace(mode='bucketed', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: bucketed
+[Note] All-reduce communication is overlapped with the backward pass so backward computation happens concurrently with the period that is measured as the communication time.
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [653.9501342773438, 653.13525390625, 652.0995483398438, 652.8577880859375, 652.5576171875]
+(Rank 0) Gradient communication times (ms): [296.4664611816406, 296.7669372558594, 295.40472412109375, 295.9754638671875, 296.2396545410156]
+(Rank 0) Iteration time avg (std): 652.92 (0.62) ms
+(Rank 0) Gradient communication time avg (std): 296.17 (0.46) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 45.36%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1261.452392578125,
+        656.053466796875
+    ],
+    "warmup_communication_times": [
+        376.7116394042969,
+        298.671142578125
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        14470031527.011936,
+        14455380642.02029,
+        14522039391.087976,
+        14494036039.166372,
+        14481110054.785215
+    ],
+    "avg_communication_throughput_in_gbps": 13.48976002150621,
+    "std_communication_throughput_in_gbps": 0.021110046474783293
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [647.8926391601562, 653.0480346679688, 652.059326171875, 652.993896484375, 647.67236328125]
+(Rank 1) Gradient communication times (ms): [297.4919738769531, 296.5013122558594, 295.1522216796875, 296.79693603515625, 297.1841735839844]
+(Rank 1) Iteration time avg (std): 650.73 (2.44) ms
+(Rank 1) Gradient communication time avg (std): 296.63 (0.81) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 45.58%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1272.571533203125,
+        650.9532470703125
+    ],
+    "warmup_communication_times": [
+        389.4472351074219,
+        294.3215026855469
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        14420150513.957577,
+        14468330704.37861,
+        14534462981.801878,
+        14453919563.010094,
+        14435085786.247896
+    ],
+    "avg_communication_throughput_in_gbps": 13.469150205961625,
+    "std_communication_throughput_in_gbps": 0.03685790541350918
+}
+Collecting data...
+Generating '/tmp/nsys-report-271e.qdstrm'
+[1/1] [0%                          ] bucketed.nsys-rep[1/1] [0%                          ] bucketed.nsys-rep[1/1] [5%                          ] bucketed.nsys-rep[1/1] [0%                          ] bucketed.nsys-rep[1/1] [5%                          ] bucketed.nsys-rep[1/1] [8%                          ] bucketed.nsys-rep[1/1] [10%                         ] bucketed.nsys-rep[1/1] [13%                         ] bucketed.nsys-rep[1/1] [=15%                        ] bucketed.nsys-rep[1/1] [=17%                        ] bucketed.nsys-rep[1/1] [==19%                       ] bucketed.nsys-rep[1/1] [===22%                      ] bucketed.nsys-rep[1/1] [===24%                      ] bucketed.nsys-rep[1/1] [====25%                     ] bucketed.nsys-rep[1/1] [====27%                     ] bucketed.nsys-rep[1/1] [=====29%                    ] bucketed.nsys-rep[1/1] [=====31%                    ] bucketed.nsys-rep[1/1] [======33%                   ] bucketed.nsys-rep[1/1] [======35%                   ] bucketed.nsys-rep[1/1] [=======37%                  ] bucketed.nsys-rep[1/1] [=======39%                  ] bucketed.nsys-rep[1/1] [========41%                 ] bucketed.nsys-rep[1/1] [=========43%                ] bucketed.nsys-rep[1/1] [=========45%                ] bucketed.nsys-rep[1/1] [=========46%                ] bucketed.nsys-rep[1/1] [==========48%               ] bucketed.nsys-rep[1/1] [===========50%              ] bucketed.nsys-rep[1/1] [===========52%              ] bucketed.nsys-rep[1/1] [============54%             ] bucketed.nsys-rep[1/1] [============56%             ] bucketed.nsys-rep[1/1] [=============59%            ] bucketed.nsys-rep[1/1] [==============61%           ] bucketed.nsys-rep[1/1] [==============63%           ] bucketed.nsys-rep[1/1] [===============65%          ] bucketed.nsys-rep[1/1] [===============67%          ] bucketed.nsys-rep[1/1] [================69%         ] bucketed.nsys-rep[1/1] [================71%         ] bucketed.nsys-rep[1/1] [=================73%        ] bucketed.nsys-rep[1/1] [==================75%       ] bucketed.nsys-rep[1/1] [==================78%       ] bucketed.nsys-rep[1/1] [===================79%      ] bucketed.nsys-rep[1/1] [===================80%      ] bucketed.nsys-rep[1/1] [========================100%] bucketed.nsys-rep[1/1] [========================100%] bucketed.nsys-rep
+Generated:
+    /home/yhruan/courses/599o/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/barbell_nsys/bucketed.nsys-rep
