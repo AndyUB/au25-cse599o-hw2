@@ -333,6 +333,10 @@ def run_bucketed(
         "warmup_iteration_times": warmup_iter_times,
         "warmup_communication_times": warmup_comm_times,
     }
+    if dist.get_rank() == 0:
+        bucket_stats = ddp_model.get_bucket_stats()
+        extra_stats["num_buckets"] = len(bucket_stats)
+        extra_stats["bucket_stats"] = [bs.to_dict() for bs in bucket_stats]
     return extra_stats
 
 

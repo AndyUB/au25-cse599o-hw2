@@ -85,6 +85,36 @@ class Bucket:
     handle: dist.Work | None
 
 
+@dataclass
+class ParamStats:
+    shape: torch.Size
+    numel: int
+
+
+@dataclass
+class BucketStats:
+    num_params: int
+    bucket_size_bytes: int
+    bucket_numel: int
+    bucket_dtype: torch.dtype
+    param_stats: list[ParamStats]
+
+    def to_dict(self) -> dict:
+        return {
+            "num_params": self.num_params,
+            "bucket_size_bytes": self.bucket_size_bytes,
+            "bucket_numel": self.bucket_numel,
+            "bucket_dtype": str(self.bucket_dtype),
+            "param_stats": [
+                {
+                    "shape": list(ps.shape),
+                    "numel": ps.numel,
+                }
+                for ps in self.param_stats
+            ],
+        }
+
+
 class DDPBucketed(torch.nn.Module):
     def __init__(self, module: torch.nn.Module, bucket_size_mb: float):
         super().__init__()
@@ -201,3 +231,30 @@ class DDPBucketed(torch.nn.Module):
         for param in self.params:
             if param.requires_grad:
                 param.register_post_accumulate_grad_hook(hook)
+
+    def get_bucket_stats(self) -> list[BucketStats]:
+        stats = []
+        for bucket in self.buckets:
+            num_params = len(bucket.entries)
+            bucket_numel = bucket.flat.numel()
+            bucket_dtype = bucket.flat.dtype
+
+            param_stats = []
+            for entry in bucket.entries:
+                param_stats.append(
+                    ParamStats(
+                        entry.param.shape,
+                        entry.numel,
+                    )
+                )
+
+            stats.append(
+                BucketStats(
+                    num_params,
+                    bucket_numel * bucket.flat.element_size(),
+                    bucket_numel,
+                    bucket_dtype,
+                    param_stats,
+                )
+            )
+        return stats
