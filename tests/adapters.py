@@ -4,7 +4,7 @@ from typing import Type
 
 import torch
 
-from cse599o_systems.ddp import DDPIndividualParameters
+from cse599o_systems.ddp import DDPBucketed, DDPIndividualParameters
 
 
 def get_ddp_individual_parameters(module: torch.nn.Module) -> torch.nn.Module:
@@ -64,7 +64,7 @@ def get_ddp_bucketed(module: torch.nn.Module, bucket_size_mb: float) -> torch.nn
     Returns:
         Instance of a DDP class.
     """
-    raise NotImplementedError
+    return DDPBucketed(module, bucket_size_mb)
 
 
 def ddp_bucketed_on_after_backward(
@@ -81,7 +81,8 @@ def ddp_bucketed_on_after_backward(
             Optimizer being used with the DDP-wrapped model.
     """
     # For example: ddp_model.finish_gradient_synchronization()
-    raise NotImplementedError
+    assert isinstance(ddp_model, DDPBucketed)
+    ddp_model.finish_gradient_synchronization()
 
 
 def ddp_bucketed_on_train_batch_start(
@@ -96,7 +97,7 @@ def ddp_bucketed_on_train_batch_start(
         optimizer: torch.optim.Optimizer
             Optimizer being used with the DDP-wrapped model.
     """
-    raise NotImplementedError
+    return
 
 
 def get_sharded_optimizer(
