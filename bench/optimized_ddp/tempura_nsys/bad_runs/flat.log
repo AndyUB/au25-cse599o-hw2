@@ -1,0 +1,93 @@
+WARNING: GPU initialization took too long. Please run the NVIDIA persistence daemon.
+For more information, visit the following page:
+https://docs.nvidia.com/deploy/driver-persistence/index.html#persistence-daemon
+
+Arguments: Namespace(mode='flat', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: flat
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [1143.69921875, 1021.5121459960938, 1019.66552734375, 1022.8036499023438, 1026.80078125]
+(Rank 0) Gradient communication times (ms): [390.3050231933594, 389.47607421875, 388.3214111328125, 390.0574035644531, 393.4918212890625]
+(Rank 0) Iteration time avg (std): 1046.90 (48.46) ms
+(Rank 0) Gradient communication time avg (std): 390.33 (1.72) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 37.36%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4968.03076171875,
+        3110.54638671875
+    ],
+    "warmup_communication_times": [
+        385.7166748046875,
+        387.9465637207031
+    ],
+    "warmup_copy_times": [
+        16.28166389465332,
+        16.261695861816406
+    ],
+    "copy_times": [
+        16.2391357421875,
+        16.039552688598633,
+        16.039648056030273,
+        16.00339126586914,
+        16.013856887817383
+    ],
+    "copy_time_avg": 16.067116928100585,
+    "copy_time_std": 0.0871807209763824,
+    "copy_time_pct": 1.537466523432758,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        10991093593.675758,
+        11014486701.410522,
+        11047237976.102196,
+        10998071055.177753,
+        10902079301.029785
+    ],
+    "avg_communication_throughput_in_gbps": 10.235788044966014,
+    "std_communication_throughput_in_gbps": 0.04499436922989629
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [1143.78369140625, 1021.3785400390625, 1019.7255249023438, 1022.6969604492188, 1026.776611328125]
+(Rank 1) Gradient communication times (ms): [389.6276550292969, 387.73370361328125, 386.7972106933594, 387.8698425292969, 388.5855407714844]
+(Rank 1) Iteration time avg (std): 1046.87 (48.51) ms
+(Rank 1) Gradient communication time avg (std): 388.12 (0.94) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 37.15%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4968.673828125,
+        3107.066162109375
+    ],
+    "warmup_communication_times": [
+        398.8067321777344,
+        1311.999267578125
+    ],
+    "warmup_copy_times": [
+        16.329504013061523,
+        16.22412872314453
+    ],
+    "copy_times": [
+        16.239551544189453,
+        16.023487091064453,
+        16.020000457763672,
+        16.012256622314453,
+        16.028671264648438
+    ],
+    "copy_time_avg": 16.064793395996094,
+    "copy_time_std": 0.08754193219771271,
+    "copy_time_pct": 1.5372773734424894,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        11010201623.592236,
+        11063982831.57414,
+        11090770360.80511,
+        11060099470.548485,
+        11039728939.689886
+    ],
+    "avg_communication_throughput_in_gbps": 10.293868039960016,
+    "std_communication_throughput_in_gbps": 0.025008873935207437
+}
+Collecting data...
+Generating '/tmp/nsys-report-0915.qdstrm'
+[1/1] [0%                          ] flat.nsys-rep[1/1] [0%                          ] flat.nsys-rep[1/1] [0%                          ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [13%                         ] flat.nsys-rep[1/1] [12%                         ] flat.nsys-rep[1/1] [11%                         ] flat.nsys-rep[1/1] [10%                         ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [=16%                        ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [13%                         ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [=16%                        ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [==19%                       ] flat.nsys-rep[1/1] [==20%                       ] flat.nsys-rep[1/1] [==21%                       ] flat.nsys-rep[1/1] [===22%                      ] flat.nsys-rep[1/1] [===23%                      ] flat.nsys-rep[1/1] [===24%                      ] flat.nsys-rep[1/1] [====25%                     ] flat.nsys-rep[1/1] [====26%                     ] flat.nsys-rep[1/1] [====27%                     ] flat.nsys-rep[1/1] [====28%                     ] flat.nsys-rep[1/1] [=====29%                    ] flat.nsys-rep[1/1] [=====30%                    ] flat.nsys-rep[1/1] [=====31%                    ] flat.nsys-rep[1/1] [======33%                   ] flat.nsys-rep[1/1] [======34%                   ] flat.nsys-rep[1/1] [======35%                   ] flat.nsys-rep[1/1] [=======36%                  ] flat.nsys-rep[1/1] [=======37%                  ] flat.nsys-rep[1/1] [=======38%                  ] flat.nsys-rep[1/1] [========40%                 ] flat.nsys-rep[1/1] [========41%                 ] flat.nsys-rep[1/1] [=========43%                ] flat.nsys-rep[1/1] [=========44%                ] flat.nsys-rep[1/1] [=========46%                ] flat.nsys-rep[1/1] [==========47%               ] flat.nsys-rep[1/1] [==========49%               ] flat.nsys-rep[1/1] [===========51%              ] flat.nsys-rep[1/1] [===========52%              ] flat.nsys-rep[1/1] [============54%             ] flat.nsys-rep[1/1] [============55%             ] flat.nsys-rep[1/1] [============57%             ] flat.nsys-rep[1/1] [=============58%            ] flat.nsys-rep[1/1] [=============60%            ] flat.nsys-rep[1/1] [==============61%           ] flat.nsys-rep[1/1] [==============63%           ] flat.nsys-rep[1/1] [==============64%           ] flat.nsys-rep[1/1] [===============66%          ] flat.nsys-rep[1/1] [===============67%          ] flat.nsys-rep[1/1] [================69%         ] flat.nsys-rep[1/1] [================70%         ] flat.nsys-rep[1/1] [=================72%        ] flat.nsys-rep[1/1] [=================74%        ] flat.nsys-rep[1/1] [==================75%       ] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep
+Generated:
+	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/tempura/flat.nsys-rep

@@ -40,7 +40,7 @@ from benchmark_naive_ddp import (
 )
 from ddp import DDPBucketed, DDPIndividualParameters
 
-NUM_WARMUP = 2
+NUM_WARMUP = 3
 NUM_ITERS = 5
 
 

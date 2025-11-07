@@ -1,0 +1,60 @@
+Arguments: Namespace(mode='naive', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: naive
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [1100.2220458984375, 1104.55419921875, 1106.783447265625, 1105.7578125, 1104.664794921875]
+(Rank 0) Gradient communication times (ms): [486.0728454589844, 488.49072265625, 490.2318115234375, 488.8678283691406, 488.13385009765625]
+(Rank 0) Iteration time avg (std): 1104.40 (2.24) ms
+(Rank 0) Gradient communication time avg (std): 488.36 (1.35) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 44.22%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        5150.638671875,
+        1100.2398681640625,
+        1099.725830078125
+    ],
+    "warmup_communication_times": [
+        491.26953125,
+        487.8798522949219,
+        488.0363464355469
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        8825588757.070337,
+        8781904836.745037,
+        8750715353.760565,
+        8775130599.841278,
+        8788325249.604725
+    ],
+    "avg_communication_throughput_in_gbps": 8.1810475880321,
+    "std_communication_throughput_in_gbps": 0.022578385809733
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [1100.08154296875, 1104.680908203125, 1106.854248046875, 1105.58642578125, 1104.6580810546875]
+(Rank 1) Gradient communication times (ms): [489.7662048339844, 486.2607421875, 487.5829162597656, 486.5588684082031, 485.4530334472656]
+(Rank 1) Iteration time avg (std): 1104.37 (2.29) ms
+(Rank 1) Gradient communication time avg (std): 487.12 (1.49) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 44.11%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        5150.6728515625,
+        1100.3358154296875,
+        1099.72119140625
+    ],
+    "warmup_communication_times": [
+        485.8729248046875,
+        486.3927917480469,
+        485.5149841308594
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        8759034407.966423,
+        8822178448.339228,
+        8798255428.856157,
+        8816772889.238483,
+        8836857006.612991
+    ],
+    "avg_communication_throughput_in_gbps": 8.201803673247486,
+    "std_communication_throughput_in_gbps": 0.024968400987110492
+}
