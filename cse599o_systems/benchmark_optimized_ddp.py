@@ -227,11 +227,11 @@ def run_individual(
 
     warmup_iter_times = []
     warmup_comm_times = []
+    # Measure comm time as non-overlapped time
     if dist.get_rank() == 0:
         print(
-            "[Note] All-reduce communication is overlapped with the backward pass "
-            "so backward computation happens concurrently with the period that is "
-            "measured as the communication time."
+            "[Note] All-reduce communication is overlapped with the backward pass. "
+            "The reported communication time is the non-overlapped portion."
         )
     for _ in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
@@ -245,8 +245,8 @@ def run_individual(
         logits = ddp_model(input_ids)
         loss = cross_entropy_loss(logits, target_ids)
 
-        comm_start_ev.record()
         loss.backward()
+        comm_start_ev.record()
         ddp_model.finish_gradient_synchronization()
         comm_end_ev.record()
 
@@ -291,11 +291,11 @@ def run_bucketed(
 
     warmup_iter_times = []
     warmup_comm_times = []
+    # Measure comm time as non-overlapped time
     if dist.get_rank() == 0:
         print(
-            "[Note] All-reduce communication is overlapped with the backward pass "
-            "so backward computation happens concurrently with the period that is "
-            "measured as the communication time."
+            "[Note] All-reduce communication is overlapped with the backward pass. "
+            "The reported communication time is the non-overlapped portion."
         )
     for _ in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
@@ -309,8 +309,8 @@ def run_bucketed(
         logits = ddp_model(input_ids)
         loss = cross_entropy_loss(logits, target_ids)
 
-        comm_start_ev.record()
         loss.backward()
+        comm_start_ev.record()
         ddp_model.finish_gradient_synchronization()
         comm_end_ev.record()
 

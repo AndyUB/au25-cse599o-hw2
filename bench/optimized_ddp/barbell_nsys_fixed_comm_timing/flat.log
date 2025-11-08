@@ -1,0 +1,101 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+Arguments: Namespace(mode='flat', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: flat
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [712.2869873046875, 711.3814697265625, 715.0615234375, 716.0418701171875, 713.1295166015625]
+(Rank 0) Gradient communication times (ms): [110.76844787597656, 110.4749755859375, 112.06006622314453, 112.66889953613281, 110.58512115478516]
+(Rank 0) Iteration time avg (std): 713.58 (1.73) ms
+(Rank 0) Gradient communication time avg (std): 111.31 (0.89) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 15.60%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1347.11376953125,
+        728.7677001953125,
+        712.963623046875
+    ],
+    "warmup_communication_times": [
+        112.0709457397461,
+        112.6124496459961,
+        111.27446746826172
+    ],
+    "warmup_copy_times": [
+        15.181695938110352,
+        15.014464378356934,
+        15.004927635192871
+    ],
+    "copy_times": [
+        14.975359916687012,
+        14.976799964904785,
+        14.97590446472168,
+        14.97980785369873,
+        14.972224235534668
+    ],
+    "copy_time_avg": 14.976019287109375,
+    "copy_time_std": 0.002441846211845328,
+    "copy_time_pct": 2.098727365341165,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        38728348390.35772,
+        38831228676.42493,
+        38281960600.10878,
+        38075094881.212006,
+        38792551793.61326
+    ],
+    "avg_communication_throughput_in_gbps": 35.89488274263529,
+    "std_communication_throughput_in_gbps": 0.28455704304346047
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [712.32275390625, 711.5498657226562, 715.0138549804688, 716.0672607421875, 713.0552368164062]
+(Rank 1) Gradient communication times (ms): [112.10912322998047, 111.53826904296875, 113.84255981445312, 115.72937774658203, 111.60111999511719]
+(Rank 1) Iteration time avg (std): 713.60 (1.69) ms
+(Rank 1) Gradient communication time avg (std): 112.96 (1.61) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 15.83%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1346.0157470703125,
+        728.6397705078125,
+        712.8553466796875
+    ],
+    "warmup_communication_times": [
+        113.35968017578125,
+        113.37814331054688,
+        111.44902038574219
+    ],
+    "warmup_copy_times": [
+        15.173088073730469,
+        15.001791954040527,
+        14.962528228759766
+    ],
+    "copy_times": [
+        14.963199615478516,
+        14.958463668823242,
+        14.963264465332031,
+        14.966527938842773,
+        14.965727806091309
+    ],
+    "copy_time_avg": 14.963436698913574,
+    "copy_time_std": 0.002815025315725586,
+    "copy_time_pct": 2.0968999310105945,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        38265209078.477486,
+        38461050873.46637,
+        37682559554.105965,
+        37068194122.61722,
+        38439390574.10618
+    ],
+    "avg_communication_throughput_in_gbps": 35.374686904768126,
+    "std_communication_throughput_in_gbps": 0.5004246426050577
+}
+Collecting data...
+Generating '/tmp/nsys-report-ae18.qdstrm'
+[1/1] [0%                          ] flat.nsys-rep[1/1] [0%                          ] flat.nsys-rep[1/1] [5%                          ] flat.nsys-rep[1/1] [0%                          ] flat.nsys-rep[1/1] [6%                          ] flat.nsys-rep[1/1] [9%                          ] flat.nsys-rep[1/1] [12%                         ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [==21%                       ] flat.nsys-rep[1/1] [===23%                      ] flat.nsys-rep[1/1] [====25%                     ] flat.nsys-rep[1/1] [====28%                     ] flat.nsys-rep[1/1] [=====30%                    ] flat.nsys-rep[1/1] [=====32%                    ] flat.nsys-rep[1/1] [======34%                   ] flat.nsys-rep[1/1] [=======37%                  ] flat.nsys-rep[1/1] [=======39%                  ] flat.nsys-rep[1/1] [========41%                 ] flat.nsys-rep[1/1] [=========43%                ] flat.nsys-rep[1/1] [=========45%                ] flat.nsys-rep[1/1] [==========48%               ] flat.nsys-rep[1/1] [===========50%              ] flat.nsys-rep[1/1] [===========52%              ] flat.nsys-rep[1/1] [============54%             ] flat.nsys-rep[1/1] [============56%             ] flat.nsys-rep[1/1] [=============59%            ] flat.nsys-rep[1/1] [==============61%           ] flat.nsys-rep[1/1] [==============63%           ] flat.nsys-rep[1/1] [===============66%          ] flat.nsys-rep[1/1] [================68%         ] flat.nsys-rep[1/1] [================70%         ] flat.nsys-rep[1/1] [=================72%        ] flat.nsys-rep[1/1] [==================75%       ] flat.nsys-rep[1/1] [==================77%       ] flat.nsys-rep[1/1] [==================78%       ] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep
+Generated:
+    /home/yhruan/courses/599o/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/barbell_nsys_fixed_comm_timing/flat.nsys-rep
