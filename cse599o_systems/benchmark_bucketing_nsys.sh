@@ -7,21 +7,20 @@ HOSTNAME=${1:-tempura}
 LOG_DIR=../bench/bucketing/$HOSTNAME
 mkdir -p $LOG_DIR
 
-# bucket_size_mb_list=(1 10 100 1000)
-bucket_size_mb_list=(1 10 50 100 150 200 250 300 350 400 800 1000)
+bucket_size_mb_list=(1 10 100 200 1000)
 # Other bucket sizes tried:
 # bucket_size_mb_list=(50 200 400 800)
 # bucket_size_mb_list=(150 250 300 350)
 for bucket_size_mb in "${bucket_size_mb_list[@]}"; do
-    # uv run nsys profile -o $LOG_DIR/${bucket_size_mb}mb \
-    #     python benchmark_optimized_ddp.py \
-    #     --mode bucketed \
-    #     --bucket-size-mb $bucket_size_mb \
-    #     --verbose > $LOG_DIR/${bucket_size_mb}mb.log 2>&1
-
-    # No nsys profiling
-    uv run benchmark_optimized_ddp.py \
+    uv run nsys profile -o $LOG_DIR/${bucket_size_mb}mb \
+        python benchmark_optimized_ddp.py \
         --mode bucketed \
         --bucket-size-mb $bucket_size_mb \
         --verbose > $LOG_DIR/${bucket_size_mb}mb.log 2>&1
+
+    # No nsys profiling
+    # uv run benchmark_optimized_ddp.py \
+    #     --mode bucketed \
+    #     --bucket-size-mb $bucket_size_mb \
+    #     --verbose > $LOG_DIR/${bucket_size_mb}mb.log 2>&1
 done
