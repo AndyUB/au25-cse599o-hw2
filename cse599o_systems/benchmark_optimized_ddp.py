@@ -55,6 +55,23 @@ def dist_cleanup() -> None:
     dist.destroy_process_group()
 
 
+def add_timing_breakdown(
+    extra_stats: dict,
+    breakdown: dict[str, list[float]],
+    total: list[float],
+    num_warmup: int,
+) -> None:
+    for name, times in breakdown.items():
+        times_warmup = times[:num_warmup]
+        times_bench = times[num_warmup:]
+        extra_stats[f"warmup_{name}_times"] = times_warmup
+        extra_stats[f"{name}_times"] = times_bench
+        extra_stats[f"{name}_time_avg"] = np.mean(times_bench)
+        extra_stats[f"{name}_time_std"] = np.std(times_bench)
+        pct_times = [t / tot for t, tot in zip(times_bench, total)]
+        extra_stats[f"{name}_time_pct"] = 100 * np.mean(pct_times)
+
+
 # ============================================================
 # (0) Naive DDP
 # ============================================================
@@ -72,17 +89,31 @@ def run_naive(
 
     warmup_iter_times = []
     warmup_comm_times = []
+    zero_grad_times = []
+    fwd_times = []
+    loss_times = []
+    bwd_times = []
+    step_times = []
+
     for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
         comm_end_ev = torch.cuda.Event(enable_timing=True)
+        fwd_start_ev = torch.cuda.Event(enable_timing=True)
+        fwd_end_ev = torch.cuda.Event(enable_timing=True)
+        bwd_start_ev = torch.cuda.Event(enable_timing=True)
 
         torch.cuda.synchronize()
         iter_start_ev.record()
         optimizer.zero_grad()
+
+        fwd_start_ev.record()
         logits = model(input_ids)
+        fwd_end_ev.record()
+
         loss = cross_entropy_loss(logits, target_ids)
+        bwd_start_ev.record()
         loss.backward()
 
         comm_start_ev.record()
@@ -107,10 +138,33 @@ def run_naive(
             warmup_iter_times.append(iter_time)
             warmup_comm_times.append(comm_time)
 
+        zero_grad_time = iter_start_ev.elapsed_time(fwd_start_ev)
+        fwd_time = fwd_start_ev.elapsed_time(fwd_end_ev)
+        loss_time = fwd_end_ev.elapsed_time(bwd_start_ev)
+        bwd_time = bwd_start_ev.elapsed_time(comm_start_ev)
+        step_time = comm_end_ev.elapsed_time(iter_end_ev)
+        zero_grad_times.append(zero_grad_time)
+        fwd_times.append(fwd_time)
+        loss_times.append(loss_time)
+        bwd_times.append(bwd_time)
+        step_times.append(step_time)
+
     extra_stats = {
         "warmup_iteration_times": warmup_iter_times,
         "warmup_communication_times": warmup_comm_times,
     }
+    add_timing_breakdown(
+        extra_stats,
+        {
+            "zero_grad": zero_grad_times,
+            "fwd": fwd_times,
+            "loss": loss_times,
+            "bwd": bwd_times,
+            "step": step_times,
+        },
+        iteration_times,
+        num_warmup,
+    )
     return extra_stats
 
 
@@ -129,10 +183,14 @@ def run_flat(
     """All-reduce a single flattened gradient tensor."""
     input_ids, target_ids = data
 
-    copy_times = []
     warmup_iter_times = []
     warmup_comm_times = []
-    warmup_copy_times = []
+    copy_times = []
+    zero_grad_times = []
+    fwd_times = []
+    loss_times = []
+    bwd_times = []
+    step_times = []
 
     dtype = get_model_dtype(model)
     flat_tensor_size = sum(param.numel() for param in model.parameters())
@@ -149,13 +207,20 @@ def run_flat(
         comm_start_ev = torch.cuda.Event(enable_timing=True)
         comm_end_ev = torch.cuda.Event(enable_timing=True)
         copy_start_ev = torch.cuda.Event(enable_timing=True)
-        copy_end_ev = torch.cuda.Event(enable_timing=True)
+        fwd_start_ev = torch.cuda.Event(enable_timing=True)
+        fwd_end_ev = torch.cuda.Event(enable_timing=True)
+        bwd_start_ev = torch.cuda.Event(enable_timing=True)
 
         torch.cuda.synchronize()
         iter_start_ev.record()
         optimizer.zero_grad()
+
+        fwd_start_ev.record()
         logits = model(input_ids)
+        fwd_end_ev.record()
+
         loss = cross_entropy_loss(logits, target_ids)
+        bwd_start_ev.record()
         loss.backward()
 
         copy_start_ev.record()
@@ -167,7 +232,6 @@ def run_flat(
             flat_grad[offset : offset + numel].copy_(param.grad.reshape(-1))
             param.grad = flat_grad[offset : offset + numel].view_as(param)
             offset += numel
-        copy_end_ev.record()
 
         comm_start_ev.record()
         dist.all_reduce(flat_grad, op=dist.ReduceOp.SUM)
@@ -182,30 +246,43 @@ def run_flat(
         # Times in milliseconds
         iter_time = iter_start_ev.elapsed_time(iter_end_ev)
         comm_time = comm_start_ev.elapsed_time(comm_end_ev)
-        copy_time = copy_start_ev.elapsed_time(copy_end_ev)
+        copy_time = copy_start_ev.elapsed_time(comm_start_ev)
         if it >= num_warmup:
             iteration_times.append(iter_time)
             comm_times.append(comm_time)
-            copy_times.append(copy_time)
         else:
             warmup_iter_times.append(iter_time)
             warmup_comm_times.append(comm_time)
-            warmup_copy_times.append(copy_time)
+        copy_times.append(copy_time)
 
-    avg_copy_time = np.mean(copy_times)
-    std_copy_time = np.std(copy_times)
-    pct_copy_time = 100 * np.mean(
-        [ct / it for ct, it in zip(copy_times, iteration_times)]
-    )
+        zero_grad_time = iter_start_ev.elapsed_time(fwd_start_ev)
+        fwd_time = fwd_start_ev.elapsed_time(fwd_end_ev)
+        loss_time = fwd_end_ev.elapsed_time(bwd_start_ev)
+        bwd_time = bwd_start_ev.elapsed_time(copy_start_ev)
+        step_time = comm_end_ev.elapsed_time(iter_end_ev)
+        zero_grad_times.append(zero_grad_time)
+        fwd_times.append(fwd_time)
+        loss_times.append(loss_time)
+        bwd_times.append(bwd_time)
+        step_times.append(step_time)
+
     extra_stats = {
         "warmup_iteration_times": warmup_iter_times,
         "warmup_communication_times": warmup_comm_times,
-        "warmup_copy_times": warmup_copy_times,
-        "copy_times": copy_times,
-        "copy_time_avg": avg_copy_time,
-        "copy_time_std": std_copy_time,
-        "copy_time_pct": pct_copy_time,
     }
+    add_timing_breakdown(
+        extra_stats,
+        {
+            "copy": copy_times,
+            "zero_grad": zero_grad_times,
+            "fwd": fwd_times,
+            "loss": loss_times,
+            "bwd": bwd_times,
+            "step": step_times,
+        },
+        iteration_times,
+        num_warmup,
+    )
     return extra_stats
 
 
@@ -227,25 +304,39 @@ def run_individual(
 
     warmup_iter_times = []
     warmup_comm_times = []
+    zero_grad_times = []
+    fwd_times = []
+    loss_times = []
+    bwd_times = []
+    step_times = []
     # Measure comm time as non-overlapped time
     if dist.get_rank() == 0:
         print(
             "[Note] All-reduce communication is overlapped with the backward pass. "
             "The reported communication time is the non-overlapped portion."
         )
+
     for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
         comm_end_ev = torch.cuda.Event(enable_timing=True)
+        fwd_start_ev = torch.cuda.Event(enable_timing=True)
+        fwd_end_ev = torch.cuda.Event(enable_timing=True)
+        bwd_start_ev = torch.cuda.Event(enable_timing=True)
 
         torch.cuda.synchronize()
         iter_start_ev.record()
         optimizer.zero_grad()
-        logits = ddp_model(input_ids)
-        loss = cross_entropy_loss(logits, target_ids)
 
+        fwd_start_ev.record()
+        logits = ddp_model(input_ids)
+        fwd_end_ev.record()
+
+        loss = cross_entropy_loss(logits, target_ids)
+        bwd_start_ev.record()
         loss.backward()
+
         comm_start_ev.record()
         ddp_model.finish_gradient_synchronization()
         comm_end_ev.record()
@@ -265,10 +356,37 @@ def run_individual(
             warmup_iter_times.append(iter_time)
             warmup_comm_times.append(comm_time)
 
+        zero_grad_time = iter_start_ev.elapsed_time(fwd_start_ev)
+        fwd_time = fwd_start_ev.elapsed_time(fwd_end_ev)
+        loss_time = fwd_end_ev.elapsed_time(bwd_start_ev)
+        bwd_time = bwd_start_ev.elapsed_time(comm_start_ev)
+        step_time = comm_end_ev.elapsed_time(iter_end_ev)
+        zero_grad_times.append(zero_grad_time)
+        fwd_times.append(fwd_time)
+        loss_times.append(loss_time)
+        bwd_times.append(bwd_time)
+        step_times.append(step_time)
+
     extra_stats = {
         "warmup_iteration_times": warmup_iter_times,
         "warmup_communication_times": warmup_comm_times,
     }
+    bwd_plus_comm_times = [
+        b + c for b, c in zip(bwd_times, warmup_comm_times + comm_times)
+    ]
+    add_timing_breakdown(
+        extra_stats,
+        {
+            "zero_grad": zero_grad_times,
+            "fwd": fwd_times,
+            "loss": loss_times,
+            "bwd": bwd_times,
+            "bwd_plus_comm": bwd_plus_comm_times,
+            "step": step_times,
+        },
+        iteration_times,
+        num_warmup,
+    )
     return extra_stats
 
 
@@ -291,25 +409,39 @@ def run_bucketed(
 
     warmup_iter_times = []
     warmup_comm_times = []
+    zero_grad_times = []
+    fwd_times = []
+    loss_times = []
+    bwd_times = []
+    step_times = []
     # Measure comm time as non-overlapped time
     if dist.get_rank() == 0:
         print(
             "[Note] All-reduce communication is overlapped with the backward pass. "
             "The reported communication time is the non-overlapped portion."
         )
+
     for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
         comm_end_ev = torch.cuda.Event(enable_timing=True)
+        fwd_start_ev = torch.cuda.Event(enable_timing=True)
+        fwd_end_ev = torch.cuda.Event(enable_timing=True)
+        bwd_start_ev = torch.cuda.Event(enable_timing=True)
 
         torch.cuda.synchronize()
         iter_start_ev.record()
         optimizer.zero_grad()
-        logits = ddp_model(input_ids)
-        loss = cross_entropy_loss(logits, target_ids)
 
+        fwd_start_ev.record()
+        logits = ddp_model(input_ids)
+        fwd_end_ev.record()
+
+        loss = cross_entropy_loss(logits, target_ids)
+        bwd_start_ev.record()
         loss.backward()
+
         comm_start_ev.record()
         ddp_model.finish_gradient_synchronization()
         comm_end_ev.record()
@@ -329,10 +461,37 @@ def run_bucketed(
             warmup_iter_times.append(iter_time)
             warmup_comm_times.append(comm_time)
 
+        zero_grad_time = iter_start_ev.elapsed_time(fwd_start_ev)
+        fwd_time = fwd_start_ev.elapsed_time(fwd_end_ev)
+        loss_time = fwd_end_ev.elapsed_time(bwd_start_ev)
+        bwd_time = bwd_start_ev.elapsed_time(comm_start_ev)
+        step_time = comm_end_ev.elapsed_time(iter_end_ev)
+        zero_grad_times.append(zero_grad_time)
+        fwd_times.append(fwd_time)
+        loss_times.append(loss_time)
+        bwd_times.append(bwd_time)
+        step_times.append(step_time)
+
     extra_stats = {
         "warmup_iteration_times": warmup_iter_times,
         "warmup_communication_times": warmup_comm_times,
     }
+    bwd_plus_comm_times = [
+        b + c for b, c in zip(bwd_times, warmup_comm_times + comm_times)
+    ]
+    add_timing_breakdown(
+        extra_stats,
+        {
+            "zero_grad": zero_grad_times,
+            "fwd": fwd_times,
+            "loss": loss_times,
+            "bwd": bwd_times,
+            "bwd_plus_comm": bwd_plus_comm_times,
+            "step": step_times,
+        },
+        iteration_times,
+        num_warmup,
+    )
     if dist.get_rank() == 0:
         bucket_stats = ddp_model.get_bucket_stats()
         extra_stats["num_buckets"] = len(bucket_stats)
