@@ -5,6 +5,7 @@ from typing import Type
 import torch
 
 from cse599o_systems.ddp import DDPBucketed, DDPIndividualParameters
+from cse599o_systems.sharding_optimizer import ShardedOptimizer
 
 
 def get_ddp_individual_parameters(module: torch.nn.Module) -> torch.nn.Module:
@@ -118,4 +119,4 @@ def get_sharded_optimizer(
     Returns:
         Instance of sharded optimizer.
     """
-    raise NotImplementedError
+    return ShardedOptimizer(params, optimizer_cls, **kwargs)
