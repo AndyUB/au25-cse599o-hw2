@@ -72,7 +72,7 @@ def run_naive(
 
     warmup_iter_times = []
     warmup_comm_times = []
-    for _ in range(num_iters + num_warmup):
+    for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
@@ -100,7 +100,7 @@ def run_naive(
         # Times in milliseconds
         iter_time = iter_start_ev.elapsed_time(iter_end_ev)
         comm_time = comm_start_ev.elapsed_time(comm_end_ev)
-        if _ >= num_warmup:
+        if it >= num_warmup:
             iteration_times.append(iter_time)
             comm_times.append(comm_time)
         else:
@@ -143,7 +143,7 @@ def run_flat(
         requires_grad=False,
     )
 
-    for _ in range(num_iters + num_warmup):
+    for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
@@ -183,7 +183,7 @@ def run_flat(
         iter_time = iter_start_ev.elapsed_time(iter_end_ev)
         comm_time = comm_start_ev.elapsed_time(comm_end_ev)
         copy_time = copy_start_ev.elapsed_time(copy_end_ev)
-        if _ >= num_warmup:
+        if it >= num_warmup:
             iteration_times.append(iter_time)
             comm_times.append(comm_time)
             copy_times.append(copy_time)
@@ -233,7 +233,7 @@ def run_individual(
             "[Note] All-reduce communication is overlapped with the backward pass. "
             "The reported communication time is the non-overlapped portion."
         )
-    for _ in range(num_iters + num_warmup):
+    for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
@@ -258,7 +258,7 @@ def run_individual(
         # Times in milliseconds
         iter_time = iter_start_ev.elapsed_time(iter_end_ev)
         comm_time = comm_start_ev.elapsed_time(comm_end_ev)
-        if _ >= num_warmup:
+        if it >= num_warmup:
             iteration_times.append(iter_time)
             comm_times.append(comm_time)
         else:
@@ -297,7 +297,7 @@ def run_bucketed(
             "[Note] All-reduce communication is overlapped with the backward pass. "
             "The reported communication time is the non-overlapped portion."
         )
-    for _ in range(num_iters + num_warmup):
+    for it in range(num_iters + num_warmup):
         iter_start_ev = torch.cuda.Event(enable_timing=True)
         iter_end_ev = torch.cuda.Event(enable_timing=True)
         comm_start_ev = torch.cuda.Event(enable_timing=True)
@@ -322,7 +322,7 @@ def run_bucketed(
         # Times in milliseconds
         iter_time = iter_start_ev.elapsed_time(iter_end_ev)
         comm_time = comm_start_ev.elapsed_time(comm_end_ev)
-        if _ >= num_warmup:
+        if it >= num_warmup:
             iteration_times.append(iter_time)
             comm_times.append(comm_time)
         else:

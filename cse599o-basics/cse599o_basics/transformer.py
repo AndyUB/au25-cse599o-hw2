@@ -1,3 +1,4 @@
+from typing import Callable, Optional
 import einx
 import torch
 
@@ -312,7 +313,13 @@ class MultiHeadSelfAttention(torch.nn.Module):
         theta: float = 10_000,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
-        attn_fn=None,
+        attn_fn: Optional[
+            Callable[
+                [torch.Tensor, torch.Tensor, torch.Tensor, Optional[torch.Tensor]],
+                torch.Tensor,
+            ]
+        ] = None,
+        rope_module: RoPE | None = None,
     ):
         """
         Construct the Multi-Head Self-Attention (MHSA) module.
@@ -326,6 +333,8 @@ class MultiHeadSelfAttention(torch.nn.Module):
             dtype (torch.dtype | None = None): Data type of the parameters.
             attn_fn (callable | None = None): Attention function to use.
                 If None, use the default scaled dot-product attention.
+            rope_module (RoPE | None = None): Preconstructed RoPE module to use.
+                If None, a new RoPE module will be created.
         """
 
         super().__init__()
@@ -338,12 +347,15 @@ class MultiHeadSelfAttention(torch.nn.Module):
         self.k_proj = Linear(d_model, d_model, device=device, dtype=dtype)
         self.v_proj = Linear(d_model, d_model, device=device, dtype=dtype)
         self.output_proj = Linear(d_model, d_model, device=device, dtype=dtype)
-        self.rope = RoPE(
-            theta=theta,
-            d_k=self.d_head,
-            max_seq_len=max_seq_len,
-            device=device,
-        )
+        if rope_module is not None:
+            self.rope = rope_module
+        else:
+            self.rope = RoPE(
+                theta=theta,
+                d_k=self.d_head,
+                max_seq_len=max_seq_len,
+                device=device,
+            )
 
         self.attn_fn = attn_fn or scaled_dot_product_attention
 
@@ -389,9 +401,7 @@ class MultiHeadSelfAttention(torch.nn.Module):
             torch.ones((seq_len, seq_len), device=x.device, dtype=torch.bool),
             diagonal=0,
         )  # (seq_len, seq_len)
-        attn_output = self.attn_fn(
-            q, k, v, mask=mask
-        )  # (..., num_heads, seq_len, d_head)
+        attn_output = self.attn_fn(q, k, v, mask)  # (..., num_heads, seq_len, d_head)
         attn_output = torch.transpose(
             attn_output, -2, -3
         )  # (..., seq_len, num_heads, d_head)
@@ -412,7 +422,13 @@ class TransformerBlock(torch.nn.Module):
         theta: float = 10_000,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
-        attn_fn=None,
+        attn_fn: Optional[
+            Callable[
+                [torch.Tensor, torch.Tensor, torch.Tensor, Optional[torch.Tensor]],
+                torch.Tensor,
+            ]
+        ] = None,
+        rope_module: RoPE | None = None,
     ):
         """
         Construct a Transformer block.
@@ -427,6 +443,8 @@ class TransformerBlock(torch.nn.Module):
             dtype (torch.dtype | None = None): Data type of the parameters.
             attn_fn (callable | None = None): Attention function to use.
                 If None, use the default scaled dot-product attention.
+            rope_module (RoPE | None = None): Preconstructed RoPE module to use.
+                If None, a new RoPE module will be created.
         """
 
         super().__init__()
@@ -439,6 +457,7 @@ class TransformerBlock(torch.nn.Module):
             device=device,
             dtype=dtype,
             attn_fn=attn_fn,
+            rope_module=rope_module,
         )
         self.ln2 = RMSNorm(d_model, device=device, dtype=dtype)
         self.ffn = SwiGLU(d_model, d_ff, device=device, dtype=dtype)
@@ -478,7 +497,12 @@ class Transformer(torch.nn.Module):
         theta: float = 10_000,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
-        attn_fn=None,
+        attn_fn: Optional[
+            Callable[
+                [torch.Tensor, torch.Tensor, torch.Tensor, Optional[torch.Tensor]],
+                torch.Tensor,
+            ]
+        ] = None,
     ):
         """
         Construct a Transformer model.
@@ -499,6 +523,15 @@ class Transformer(torch.nn.Module):
         """
 
         super().__init__()
+        if d_model % num_heads != 0:
+            raise ValueError("d_model must be divisible by num_heads")
+        rope_module = RoPE(
+            theta=theta,
+            d_k=d_model // num_heads,
+            max_seq_len=context_length,
+            device=device,
+        )
+
         self.token_embeddings = Embedding(
             vocab_size, d_model, device=device, dtype=dtype
         )
@@ -513,6 +546,7 @@ class Transformer(torch.nn.Module):
                     device=device,
                     dtype=dtype,
                     attn_fn=attn_fn,
+                    rope_module=rope_module,
                 )
                 for _ in range(num_layers)
             ]
