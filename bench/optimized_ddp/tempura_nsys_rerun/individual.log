@@ -1,0 +1,66 @@
+Arguments: Namespace(mode='individual', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: individual
+[Note] All-reduce communication is overlapped with the backward pass. The reported communication time is the non-overlapped portion.
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [983.9424438476562, 965.317626953125, 973.29150390625, 965.772705078125, 969.7996826171875]
+(Rank 0) Gradient communication times (ms): [39.71446228027344, 34.69548797607422, 49.07670211791992, 34.375457763671875, 33.90991973876953]
+(Rank 0) Iteration time avg (std): 971.62 (6.81) ms
+(Rank 0) Gradient communication time avg (std): 38.35 (5.76) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 3.95%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4989.44140625,
+        1563.6593017578125,
+        984.3934936523438
+    ],
+    "warmup_communication_times": [
+        34.549983978271484,
+        38.13663864135742,
+        39.620033264160156
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        108018056740.2728,
+        123643715371.81644,
+        87411721955.00049,
+        124794819300.80832,
+        126508085924.348
+    ],
+    "avg_communication_throughput_in_gbps": 106.24088333775217,
+    "std_communication_throughput_in_gbps": 13.868099413789608
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [984.0555419921875, 965.2482299804688, 973.3784790039062, 965.7743530273438, 969.0180053710938]
+(Rank 1) Gradient communication times (ms): [77.09580993652344, 34.776031494140625, 39.34697723388672, 34.28160095214844, 33.90422439575195]
+(Rank 1) Iteration time avg (std): 971.49 (6.92) ms
+(Rank 1) Gradient communication time avg (std): 43.88 (16.72) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 4.51%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4989.47802734375,
+        1562.80908203125,
+        984.9424438476562
+    ],
+    "warmup_communication_times": [
+        32.83273696899414,
+        49.60028839111328,
+        77.01545715332031
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        55643478465.71761,
+        123357348601.51588,
+        109026902231.90604,
+        125136484903.02353,
+        126529337168.30585
+    ],
+    "avg_communication_throughput_in_gbps": 100.52575755314322,
+    "std_communication_throughput_in_gbps": 25.042308792817757
+}
+Collecting data...
+Generating '/tmp/nsys-report-089c.qdstrm'
+[1/1] [0%                          ] individual.nsys-rep[1/1] [0%                          ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [==19%                       ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [=16%                        ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [10%                         ] individual.nsys-rep[1/1] [9%                          ] individual.nsys-rep[1/1] [10%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [=16%                        ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [==19%                       ] individual.nsys-rep[1/1] [==20%                       ] individual.nsys-rep[1/1] [==21%                       ] individual.nsys-rep[1/1] [===22%                      ] individual.nsys-rep[1/1] [===23%                      ] individual.nsys-rep[1/1] [===24%                      ] individual.nsys-rep[1/1] [====25%                     ] individual.nsys-rep[1/1] [====26%                     ] individual.nsys-rep[1/1] [====27%                     ] individual.nsys-rep[1/1] [=====29%                    ] individual.nsys-rep[1/1] [=====30%                    ] individual.nsys-rep[1/1] [=====31%                    ] individual.nsys-rep[1/1] [=====32%                    ] individual.nsys-rep[1/1] [======33%                   ] individual.nsys-rep[1/1] [======35%                   ] individual.nsys-rep[1/1] [=======36%                  ] individual.nsys-rep[1/1] [=======37%                  ] individual.nsys-rep[1/1] [=======38%                  ] individual.nsys-rep[1/1] [=======39%                  ] individual.nsys-rep[1/1] [========40%                 ] individual.nsys-rep[1/1] [========41%                 ] individual.nsys-rep[1/1] [=========43%                ] individual.nsys-rep[1/1] [=========44%                ] individual.nsys-rep[1/1] [=========45%                ] individual.nsys-rep[1/1] [=========46%                ] individual.nsys-rep[1/1] [==========47%               ] individual.nsys-rep[1/1] [==========48%               ] individual.nsys-rep[1/1] [===========50%              ] individual.nsys-rep[1/1] [===========51%              ] individual.nsys-rep[1/1] [===========52%              ] individual.nsys-rep[1/1] [===========53%              ] individual.nsys-rep[1/1] [============54%             ] individual.nsys-rep[1/1] [============55%             ] individual.nsys-rep[1/1] [============57%             ] individual.nsys-rep[1/1] [=============58%            ] individual.nsys-rep[1/1] [=============59%            ] individual.nsys-rep[1/1] [=============60%            ] individual.nsys-rep[1/1] [==============61%           ] individual.nsys-rep[1/1] [==============63%           ] individual.nsys-rep[1/1] [==============64%           ] individual.nsys-rep[1/1] [===============65%          ] individual.nsys-rep[1/1] [===============66%          ] individual.nsys-rep[1/1] [===============67%          ] individual.nsys-rep[1/1] [================68%         ] individual.nsys-rep[1/1] [================70%         ] individual.nsys-rep[1/1] [================71%         ] individual.nsys-rep[1/1] [=================72%        ] individual.nsys-rep[1/1] [=================73%        ] individual.nsys-rep[1/1] [=================74%        ] individual.nsys-rep[1/1] [==================75%       ] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep
+Generated:
+	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/tempura_nsys_final/individual.nsys-rep

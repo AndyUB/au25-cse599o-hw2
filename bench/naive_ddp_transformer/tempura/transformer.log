@@ -1,56 +1,56 @@
 Args: Namespace(model='transformer', verbose=True, toy_ckpt_path='toy_model_ckpt.pt', transformer_world_size=2, transformer_global_batch_size=8, transformer_context_length=128, transformer_rope_theta=10000, transformer_warmup_steps=2, transformer_benchmark_steps=5, transformer_log_dir='../bench/naive_ddp_transformer/tempura')
-399 broadcasts to sync 327 params and 72 buffers
+329 broadcasts to sync 327 params and 2 buffers
 === Rank 0 Results ===
-(Rank 0) Iteration times (ms): [1102.6102294921875, 1103.9559326171875, 1104.4617919921875, 1104.3251953125, 1105.0245361328125]
-(Rank 0) Gradient communication times (ms): [490.66400146484375, 487.969482421875, 487.8427734375, 490.3162841796875, 490.9916076660156]
-(Rank 0) Iteration time avg (std): 1104.08 (0.81) ms
-(Rank 0) Gradient communication time avg (std): 489.56 (1.37) ms
-(Rank 0) Fraction of gradient communication time in an iteration: 44.34%
+(Rank 0) Iteration times (ms): [1100.9566650390625, 1101.6151123046875, 1104.2393798828125, 1103.4794921875, 1103.6016845703125]
+(Rank 0) Gradient communication times (ms): [487.7557678222656, 488.0485534667969, 487.0377197265625, 487.365966796875, 487.9073486328125]
+(Rank 0) Iteration time avg (std): 1102.78 (1.26) ms
+(Rank 0) Gradient communication time avg (std): 487.62 (0.37) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 44.22%
 === Rank 0 Extra Stats ===
 {
     "total_communication_volume_in_bytes": 4289879040.0,
     "communication_throughputs_in_bytes_per_second": [
-        8743007490.243547,
-        8791285509.717955,
-        8793568898.791115,
-        8749207763.264654,
-        8737173860.043
+        8795137490.94854,
+        8789861192.14438,
+        8808104313.58061,
+        8802171945.231337,
+        8792405058.093235
     ],
-    "avg_communication_throughput_in_gbps": 8.161038816358944,
-    "std_communication_throughput_in_gbps": 0.022779658720600976,
+    "avg_communication_throughput_in_gbps": 8.193343877792007,
+    "std_communication_throughput_in_gbps": 0.006235875115241578,
     "warmup_iteration_times_in_ms": [
-        5139.7666015625,
-        1123.9510498046875
+        5257.11767578125,
+        1114.6502685546875
     ],
     "warmup_communication_times_in_ms": [
-        486.40203857421875,
-        490.93634033203125
+        487.0196533203125,
+        487.41961669921875
     ]
 }
 === Rank 1 Results ===
-(Rank 1) Iteration times (ms): [1101.880859375, 1104.1976318359375, 1104.536376953125, 1104.3743896484375, 1104.8302001953125]
-(Rank 1) Gradient communication times (ms): [487.0061950683594, 495.2698974609375, 486.70550537109375, 487.39105224609375, 486.5535888671875]
-(Rank 1) Iteration time avg (std): 1103.96 (1.06) ms
-(Rank 1) Gradient communication time avg (std): 488.59 (3.35) ms
-(Rank 1) Fraction of gradient communication time in an iteration: 44.26%
+(Rank 1) Iteration times (ms): [1100.5545654296875, 1101.46337890625, 1104.24267578125, 1103.4876708984375, 1103.572998046875]
+(Rank 1) Gradient communication times (ms): [486.2567443847656, 487.3564147949219, 487.4651794433594, 487.37005615234375, 486.74920654296875]
+(Rank 1) Iteration time avg (std): 1102.66 (1.41) ms
+(Rank 1) Gradient communication time avg (std): 487.04 (0.47) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 44.17%
 === Rank 1 Extra Stats ===
 {
     "total_communication_volume_in_bytes": 4289879040.0,
     "communication_throughputs_in_bytes_per_second": [
-        8808674475.686792,
-        8661699533.915945,
-        8814116529.725992,
-        8801718907.703608,
-        8816868559.099232
+        8822250980.657866,
+        8802344464.482258,
+        8800380459.787199,
+        8802098089.21674,
+        8813325183.348404
     ],
-    "avg_communication_throughput_in_gbps": 8.177585528442927,
-    "std_communication_throughput_in_gbps": 0.055584074919227976,
+    "avg_communication_throughput_in_gbps": 8.203163589815137,
+    "std_communication_throughput_in_gbps": 0.00786172171076976,
     "warmup_iteration_times_in_ms": [
-        5141.6064453125,
-        1123.180908203125
+        5258.623046875,
+        1113.51904296875
     ],
     "warmup_communication_times_in_ms": [
-        499.9146728515625,
-        486.39385986328125
+        513.9679565429688,
+        484.4540100097656
     ]
 }
