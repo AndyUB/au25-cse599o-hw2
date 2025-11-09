@@ -27,7 +27,7 @@ import torch.multiprocessing as mp
 from cse599o_basics.util import AdamW, cross_entropy_loss
 from cse599o_basics.transformer import Transformer
 
-from .benchmark_naive_ddp import (
+from cse599o_systems.benchmark_naive_ddp import (
     SEED,
     TRANSFORMER_ARGS,
     ADAMW_ARGS,
@@ -38,7 +38,7 @@ from .benchmark_naive_ddp import (
     get_model_dtype,
     compute_stats,
 )
-from .ddp import DDPBucketed, DDPIndividualParameters
+from cse599o_systems.ddp import DDPBucketed, DDPIndividualParameters
 
 NUM_WARMUP = 3
 NUM_ITERS = 5
