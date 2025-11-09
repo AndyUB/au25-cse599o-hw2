@@ -1,6 +1,0 @@
-Args: Namespace(model='transformer', verbose=True, toy_ckpt_path='toy_model_ckpt.pt', transformer_world_size=2, transformer_global_batch_size=8, transformer_context_length=256, transformer_rope_theta=10000, transformer_warmup_steps=2, transformer_benchmark_steps=5, transformer_log_dir='../bench/naive_ddp_transformer')
-399 broadcasts to sync 327 params and 72 buffers
-=== Naive DDP Transformer Benchmark Results ===
-(Rank 0) Per-iteration training time: 1029.32 ms
-(Rank 0) Per-iteration gradient communication time: 130.61 ms
-Fraction of gradient communication time in an iteration: 12.69%

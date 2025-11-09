@@ -1,72 +1,0 @@
-WARNING: CPU IP/backtrace sampling not supported, disabling.
-Try the 'nsys status --environment' command to learn more.
-
-WARNING: CPU context switch tracing not supported, disabling.
-Try the 'nsys status --environment' command to learn more.
-
-Arguments: Namespace(mode='individual', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
-Mode: individual
-[Note] All-reduce communication is overlapped with the backward pass. The reported communication time is the non-overlapped portion.
-=== Rank 0 Results ===
-(Rank 0) Iteration times (ms): [628.7685546875, 628.9464721679688, 629.3778686523438, 629.2167358398438, 629.433837890625]
-(Rank 0) Gradient communication times (ms): [18.035263061523438, 18.206783294677734, 18.035327911376953, 18.012767791748047, 18.073087692260742]
-(Rank 0) Iteration time avg (std): 629.15 (0.25) ms
-(Rank 0) Gradient communication time avg (std): 18.07 (0.07) ms
-(Rank 0) Fraction of gradient communication time in an iteration: 2.87%
-=== Rank 0 Extra Stats ===
-{
-    "warmup_iteration_times": [
-        1259.116455078125,
-        631.5087280273438,
-        629.6017456054688
-    ],
-    "warmup_communication_times": [
-        32.736671447753906,
-        24.993247985839844,
-        17.995744705200195
-    ],
-    "total_communication_volume_in_bytes": 4289879040.0,
-    "communication_throughputs_in_bytes_per_second": [
-        237860630331.03516,
-        235619822050.2812,
-        237859775052.59998,
-        238157682905.63684,
-        237362818852.31
-    ],
-    "avg_communication_throughput_in_gbps": 221.07003800419403,
-    "std_communication_throughput_in_gbps": 0.8499249494647781
-}
-=== Rank 1 Results ===
-(Rank 1) Iteration times (ms): [628.7677001953125, 628.9296875, 629.375, 629.267578125, 629.4271240234375]
-(Rank 1) Gradient communication times (ms): [18.021728515625, 18.271808624267578, 18.04979133605957, 18.496095657348633, 18.14735984802246]
-(Rank 1) Iteration time avg (std): 629.15 (0.26) ms
-(Rank 1) Gradient communication time avg (std): 18.20 (0.17) ms
-(Rank 1) Fraction of gradient communication time in an iteration: 2.89%
-=== Rank 1 Extra Stats ===
-{
-    "warmup_iteration_times": [
-        1262.4595947265625,
-        628.2271118164062,
-        629.608642578125
-    ],
-    "warmup_communication_times": [
-        16.8768310546875,
-        18.794336318969727,
-        18.054527282714844
-    ],
-    "total_communication_volume_in_bytes": 4289879040.0,
-    "communication_throughputs_in_bytes_per_second": [
-        238039266670.8211,
-        234781303165.70993,
-        237669176342.762,
-        231934302215.59216,
-        236391358077.76874
-    ],
-    "avg_communication_throughput_in_gbps": 219.57147987050075,
-    "std_communication_throughput_in_gbps": 2.075507780452473
-}
-Collecting data...
-Generating '/tmp/nsys-report-cf3f.qdstrm'
-[1/1] [0%                          ] individual.nsys-rep[1/1] [0%                          ] individual.nsys-rep[1/1] [5%                          ] individual.nsys-rep[1/1] [0%                          ] individual.nsys-rep[1/1] [7%                          ] individual.nsys-rep[1/1] [9%                          ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [==19%                       ] individual.nsys-rep[1/1] [==20%                       ] individual.nsys-rep[1/1] [===22%                      ] individual.nsys-rep[1/1] [===24%                      ] individual.nsys-rep[1/1] [====25%                     ] individual.nsys-rep[1/1] [====27%                     ] individual.nsys-rep[1/1] [=====29%                    ] individual.nsys-rep[1/1] [=====30%                    ] individual.nsys-rep[1/1] [=====32%                    ] individual.nsys-rep[1/1] [======34%                   ] individual.nsys-rep[1/1] [======35%                   ] individual.nsys-rep[1/1] [=======37%                  ] individual.nsys-rep[1/1] [=======39%                  ] individual.nsys-rep[1/1] [========40%                 ] individual.nsys-rep[1/1] [========42%                 ] individual.nsys-rep[1/1] [=========44%                ] individual.nsys-rep[1/1] [=========46%                ] individual.nsys-rep[1/1] [==========47%               ] individual.nsys-rep[1/1] [==========49%               ] individual.nsys-rep[1/1] [===========51%              ] individual.nsys-rep[1/1] [===========52%              ] individual.nsys-rep[1/1] [============54%             ] individual.nsys-rep[1/1] [============56%             ] individual.nsys-rep[1/1] [=============58%            ] individual.nsys-rep[1/1] [=============60%            ] individual.nsys-rep[1/1] [==============62%           ] individual.nsys-rep[1/1] [==============64%           ] individual.nsys-rep[1/1] [===============65%          ] individual.nsys-rep[1/1] [===============67%          ] individual.nsys-rep[1/1] [================69%         ] individual.nsys-rep[1/1] [================71%         ] individual.nsys-rep[1/1] [=================73%        ] individual.nsys-rep[1/1] [==================75%       ] individual.nsys-rep[1/1] [==================77%       ] individual.nsys-rep[1/1] [===================79%      ] individual.nsys-rep[1/1] [===================80%      ] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep
-Generated:
-    /home/yhruan/courses/599o/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/barbell_nsys_fixed_comm_timing/individual.nsys-rep

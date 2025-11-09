@@ -1,61 +1,0 @@
-Arguments: Namespace(mode='naive', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
-Mode: naive
-=== Rank 0 Results ===
-(Rank 0) Iteration times (ms): [1105.71826171875, 1108.9039306640625, 1110.2828369140625, 1112.810791015625, 1111.521240234375]
-(Rank 0) Gradient communication times (ms): [486.537109375, 490.6098327636719, 489.2996520996094, 488.529052734375, 489.78045654296875]
-(Rank 0) Iteration time avg (std): 1109.85 (2.44) ms
-(Rank 0) Gradient communication time avg (std): 488.95 (1.38) ms
-(Rank 0) Fraction of gradient communication time in an iteration: 44.06%
-=== Rank 0 Extra Stats ===
-{
-    "warmup_iteration_times": [
-        5082.42431640625,
-        1225.0672607421875
-    ],
-    "warmup_communication_times": [
-        487.93853759765625,
-        487.5815124511719
-    ],
-    "total_communication_volume_in_bytes": 4289879040.0,
-    "communication_throughputs_in_bytes_per_second": [
-        8817167195.141045,
-        8743972814.06801,
-        8767386246.019007,
-        8781215806.897999,
-        8758779536.201534
-    ],
-    "avg_communication_throughput_in_gbps": 8.171148895905835,
-    "std_communication_throughput_in_gbps": 0.02316007925029368
-}
-=== Rank 1 Results ===
-(Rank 1) Iteration times (ms): [1106.3592529296875, 1108.7821044921875, 1110.3218994140625, 1112.6732177734375, 1111.5521240234375]
-(Rank 1) Gradient communication times (ms): [486.1184387207031, 486.6600036621094, 486.45416259765625, 488.81732177734375, 486.7783508300781]
-(Rank 1) Iteration time avg (std): 1109.94 (2.21) ms
-(Rank 1) Gradient communication time avg (std): 486.97 (0.95) ms
-(Rank 1) Fraction of gradient communication time in an iteration: 43.87%
-=== Rank 1 Extra Stats ===
-{
-    "warmup_iteration_times": [
-        5081.54052734375,
-        1226.5394287109375
-    ],
-    "warmup_communication_times": [
-        485.62646484375,
-        485.4354248046875
-    ],
-    "total_communication_volume_in_bytes": 4289879040.0,
-    "communication_throughputs_in_bytes_per_second": [
-        8824761001.227373,
-        8814940631.48548,
-        8818670637.110237,
-        8776037281.989037,
-        8812797513.86784
-    ],
-    "avg_communication_throughput_in_gbps": 8.204431657806031,
-    "std_communication_throughput_in_gbps": 0.016007964847967623
-}
-Collecting data...
-Generating '/tmp/nsys-report-750b.qdstrm'
-[1/1] [0%                          ] naive.nsys-rep[1/1] [0%                          ] naive.nsys-rep[1/1] [=15%                        ] naive.nsys-rep[1/1] [14%                         ] naive.nsys-rep[1/1] [13%                         ] naive.nsys-rep[1/1] [12%                         ] naive.nsys-rep[1/1] [11%                         ] naive.nsys-rep[1/1] [==18%                       ] naive.nsys-rep[1/1] [==20%                       ] naive.nsys-rep[1/1] [==19%                       ] naive.nsys-rep[1/1] [==18%                       ] naive.nsys-rep[1/1] [=17%                        ] naive.nsys-rep[1/1] [=16%                        ] naive.nsys-rep[1/1] [=15%                        ] naive.nsys-rep[1/1] [14%                         ] naive.nsys-rep[1/1] [13%                         ] naive.nsys-rep[1/1] [12%                         ] naive.nsys-rep[1/1] [11%                         ] naive.nsys-rep[1/1] [12%                         ] naive.nsys-rep[1/1] [13%                         ] naive.nsys-rep[1/1] [14%                         ] naive.nsys-rep[1/1] [=15%                        ] naive.nsys-rep[1/1] [=16%                        ] naive.nsys-rep[1/1] [=17%                        ] naive.nsys-rep[1/1] [==18%                       ] naive.nsys-rep[1/1] [==19%                       ] naive.nsys-rep[1/1] [==20%                       ] naive.nsys-rep[1/1] [==21%                       ] naive.nsys-rep[1/1] [===22%                      ] naive.nsys-rep[1/1] [===23%                      ] naive.nsys-rep[1/1] [===24%                      ] naive.nsys-rep[1/1] [====25%                     ] naive.nsys-rep[1/1] [====26%                     ] naive.nsys-rep[1/1] [====27%                     ] naive.nsys-rep[1/1] [====28%                     ] naive.nsys-rep[1/1] [=====29%                    ] naive.nsys-rep[1/1] [=====30%                    ] naive.nsys-rep[1/1] [=====31%                    ] naive.nsys-rep[1/1] [=====32%                    ] naive.nsys-rep[1/1] [======34%                   ] naive.nsys-rep[1/1] [======35%                   ] naive.nsys-rep[1/1] [=======36%                  ] naive.nsys-rep[1/1] [=======38%                  ] naive.nsys-rep[1/1] [=======39%                  ] naive.nsys-rep[1/1] [========41%                 ] naive.nsys-rep[1/1] [========42%                 ] naive.nsys-rep[1/1] [=========43%                ] naive.nsys-rep[1/1] [=========44%                ] naive.nsys-rep[1/1] [=========46%                ] naive.nsys-rep[1/1] [==========47%               ] naive.nsys-rep[1/1] [==========48%               ] naive.nsys-rep[1/1] [===========50%              ] naive.nsys-rep[1/1] [===========51%              ] naive.nsys-rep[1/1] [===========52%              ] naive.nsys-rep[1/1] [============54%             ] naive.nsys-rep[1/1] [============55%             ] naive.nsys-rep[1/1] [============56%             ] naive.nsys-rep[1/1] [=============58%            ] naive.nsys-rep[1/1] [=============59%            ] naive.nsys-rep[1/1] [=============60%            ] naive.nsys-rep[1/1] [==============62%           ] naive.nsys-rep[1/1] [==============63%           ] naive.nsys-rep[1/1] [==============64%           ] naive.nsys-rep[1/1] [===============66%          ] naive.nsys-rep[1/1] [===============67%          ] naive.nsys-rep[1/1] [================68%         ] naive.nsys-rep[1/1] [================69%         ] naive.nsys-rep[1/1] [================71%         ] naive.nsys-rep[1/1] [=================72%        ] naive.nsys-rep[1/1] [=================73%        ] naive.nsys-rep[1/1] [==================75%       ] naive.nsys-rep[1/1] [==================76%       ] naive.nsys-rep[1/1] [========================100%] naive.nsys-rep[1/1] [========================100%] naive.nsys-rep
-Generated:
-	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/tempura/naive.nsys-rep
