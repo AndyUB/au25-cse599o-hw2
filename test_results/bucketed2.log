@@ -1,0 +1,15 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.7, pytest-8.4.1, pluggy-1.6.0
+rootdir: /homes/iws/yhruan22/au25-cse599o-hw2
+configfile: pyproject.toml
+plugins: jaxtyping-0.3.2
+collected 6 items
+
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.0016-ToyModel] PASSED
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.0016-ToyModelWithTiedWeights] PASSED
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.0001-ToyModel] PASSED
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.0001-ToyModelWithTiedWeights] PASSED
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.01-ToyModel] PASSED
+../tests/test_ddp.py::test_DistributedDataParallelCPU[0.01-ToyModelWithTiedWeights] PASSED
+
+============================== 6 passed in 45.71s ==============================

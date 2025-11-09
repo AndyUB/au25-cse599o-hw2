@@ -1,0 +1,2817 @@
+Arguments: Namespace(mode='bucketed', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=100)
+Mode: bucketed
+[Note] All-reduce communication is overlapped with the backward pass. The reported communication time is the non-overlapped portion.
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [968.4910278320312, 964.2451782226562, 971.2307739257812, 968.0892333984375, 967.5099487304688]
+(Rank 0) Gradient communication times (ms): [62.904510498046875, 52.020992279052734, 68.03520202636719, 65.96768188476562, 59.862239837646484]
+(Rank 0) Iteration time avg (std): 967.91 (2.24) ms
+(Rank 0) Gradient communication time avg (std): 61.76 (5.60) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 6.38%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1738.899658203125,
+        1034.3470458984375,
+        966.7230834960938
+    ],
+    "warmup_communication_times": [
+        43.88175964355469,
+        186.27296447753906,
+        63.213600158691406
+    ],
+    "warmup_zero_grad_times": [
+        0.5170239806175232,
+        1.1511679887771606,
+        0.9883840084075928
+    ],
+    "zero_grad_times": [
+        1.0012799501419067,
+        4.1935038566589355,
+        0.9748479723930359,
+        0.9934399724006653,
+        1.346783995628357
+    ],
+    "zero_grad_time_avg": 1.7019711494445802,
+    "zero_grad_time_std": 1.2534421283476913,
+    "zero_grad_time_pct": 0.1760955702753309,
+    "warmup_fwd_times": [
+        795.7941284179688,
+        118.34400177001953,
+        109.06463623046875
+    ],
+    "fwd_times": [
+        109.15769958496094,
+        114.67711639404297,
+        109.93276977539062,
+        109.72630310058594,
+        111.93270111083984
+    ],
+    "fwd_time_avg": 111.08531799316407,
+    "fwd_time_std": 2.0253432055265894,
+    "fwd_time_pct": 11.477245820894725,
+    "warmup_loss_times": [
+        8.008576393127441,
+        1.1225600242614746,
+        1.1421120166778564
+    ],
+    "loss_times": [
+        1.1390080451965332,
+        1.1370240449905396,
+        1.1380800008773804,
+        1.1387519836425781,
+        1.137887954711914
+    ],
+    "loss_time_avg": 1.138150405883789,
+    "loss_time_std": 0.0006985652918692311,
+    "loss_time_pct": 0.11758859033246381,
+    "warmup_bwd_times": [
+        590.8159790039062,
+        459.02740478515625,
+        524.130126953125
+    ],
+    "bwd_times": [
+        526.1295776367188,
+        524.1091918945312,
+        523.122314453125,
+        522.2408447265625,
+        525.1793212890625
+    ],
+    "bwd_time_avg": 524.15625,
+    "bwd_time_std": 1.3914532953884013,
+    "bwd_time_pct": 54.153577001216505,
+    "warmup_bwd_plus_comm_times": [
+        634.6977386474609,
+        645.3003692626953,
+        587.3437271118164
+    ],
+    "bwd_plus_comm_times": [
+        589.0340881347656,
+        576.130184173584,
+        591.1575164794922,
+        588.2085266113281,
+        585.041561126709
+    ],
+    "bwd_plus_comm_time_avg": 585.9143753051758,
+    "bwd_plus_comm_time_std": 5.272162145042435,
+    "bwd_plus_comm_time_pct": 60.53289991548658,
+    "warmup_step_times": [
+        299.8822021484375,
+        268.428955078125,
+        268.18426513671875
+    ],
+    "step_times": [
+        268.158935546875,
+        268.10736083984375,
+        268.0275573730469,
+        268.022216796875,
+        268.0509948730469
+    ],
+    "step_time_avg": 268.0734130859375,
+    "step_time_std": 0.05233148957897797,
+    "step_time_pct": 27.696169640976372,
+    "num_buckets": 44,
+    "bucket_stats": [
+        {
+            "num_params": 1,
+            "bucket_size_bytes": 257315840,
+            "bucket_numel": 64328960,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        50257,
+                        1280
+                    ],
+                    "numel": 64328960
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 98309120,
+            "bucket_numel": 24577280,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 98309120,
+            "bucket_numel": 24577280,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 98309120,
+            "bucket_numel": 24577280,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 98309120,
+            "bucket_numel": 24577280,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 98309120,
+            "bucket_numel": 24577280,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 98314240,
+            "bucket_numel": 24578560,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 7,
+            "bucket_size_bytes": 78648320,
+            "bucket_numel": 19662080,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        5120
+                    ],
+                    "numel": 6553600
+                }
+            ]
+        },
+        {
+            "num_params": 8,
+            "bucket_size_bytes": 78653440,
+            "bucket_numel": 19663360,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        5120,
+                        1280
+                    ],
+                    "numel": 6553600
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280,
+                        1280
+                    ],
+                    "numel": 1638400
+                },
+                {
+                    "shape": [
+                        1280
+                    ],
+                    "numel": 1280
+                }
+            ]
+        },
+        {
+            "num_params": 1,
+            "bucket_size_bytes": 257315840,
+            "bucket_numel": 64328960,
+            "bucket_dtype": "torch.float32",
+            "param_stats": [
+                {
+                    "shape": [
+                        50257,
+                        1280
+                    ],
+                    "numel": 64328960
+                }
+            ]
+        }
+    ],
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        68196684244.65677,
+        82464383166.47418,
+        63053814969.74828,
+        65030010414.70114,
+        71662521342.91437
+    ],
+    "avg_communication_throughput_in_gbps": 65.26846701996303,
+    "std_communication_throughput_in_gbps": 6.37522592815641
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [968.5152587890625, 964.40771484375, 971.3251953125, 968.0198974609375, 967.4166870117188]
+(Rank 1) Gradient communication times (ms): [53.91273498535156, 51.66428756713867, 55.925567626953125, 54.44291305541992, 54.55238342285156]
+(Rank 1) Iteration time avg (std): 967.94 (2.22) ms
+(Rank 1) Gradient communication time avg (std): 54.10 (1.39) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 5.59%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        1795.0103759765625,
+        978.1530151367188,
+        966.7210693359375
+    ],
+    "warmup_communication_times": [
+        46.548545837402344,
+        50.423583984375,
+        54.27971267700195
+    ],
+    "warmup_zero_grad_times": [
+        0.7256960272789001,
+        1.0032000541687012,
+        0.892799973487854
+    ],
+    "zero_grad_times": [
+        0.8744320273399353,
+        1.2889280319213867,
+        0.9255040287971497,
+        0.8725119829177856,
+        1.0864640474319458
+    ],
+    "zero_grad_time_avg": 1.0095680236816407,
+    "zero_grad_time_std": 0.1600424092079266,
+    "zero_grad_time_pct": 0.10433150449462188,
+    "warmup_fwd_times": [
+        804.8438720703125,
+        126.28508758544922,
+        121.73267364501953
+    ],
+    "fwd_times": [
+        121.11548614501953,
+        123.35414123535156,
+        126.31756591796875,
+        120.55712127685547,
+        121.3443832397461
+    ],
+    "fwd_time_avg": 122.53773956298828,
+    "fwd_time_std": 2.1129766614400682,
+    "fwd_time_pct": 12.659545406082314,
+    "warmup_loss_times": [
+        7.987743854522705,
+        1.1399999856948853,
+        1.1532479524612427
+    ],
+    "loss_times": [
+        1.1200319528579712,
+        1.1185920238494873,
+        1.1296319961547852,
+        1.1195520162582397,
+        1.1205120086669922
+    ],
+    "loss_time_avg": 1.121663999557495,
+    "loss_time_std": 0.004034281532629522,
+    "loss_time_pct": 0.11588173978905048,
+    "warmup_bwd_times": [
+        578.8482666015625,
+        530.8182373046875,
+        520.42578125
+    ],
+    "bwd_times": [
+        523.2505493164062,
+        518.8119506835938,
+        518.8540649414062,
+        522.92041015625,
+        521.2634887695312
+    ],
+    "bwd_time_avg": 521.0200927734375,
+    "bwd_time_std": 1.9085571625958415,
+    "bwd_time_pct": 53.82813885866462,
+    "warmup_bwd_plus_comm_times": [
+        625.3968124389648,
+        581.2418212890625,
+        574.705493927002
+    ],
+    "bwd_plus_comm_times": [
+        577.1632843017578,
+        570.4762382507324,
+        574.7796325683594,
+        577.3633232116699,
+        575.8158721923828
+    ],
+    "bwd_plus_comm_time_avg": 575.1196701049805,
+    "bwd_plus_comm_time_std": 2.5048800572597214,
+    "bwd_plus_comm_time_pct": 59.417022482677325,
+    "warmup_step_times": [
+        356.05621337890625,
+        268.4828796386719,
+        268.23687744140625
+    ],
+    "step_times": [
+        268.2419738769531,
+        268.1697998046875,
+        268.1728210449219,
+        268.1073913574219,
+        268.0494384765625
+    ],
+    "step_time_avg": 268.1482849121094,
+    "step_time_std": 0.06524635650338859,
+    "step_time_pct": 27.70321638128569,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        79570792339.98401,
+        83033740365.14536,
+        76706937846.66226,
+        78795912989.32033,
+        78637793086.83704
+    ],
+    "avg_communication_throughput_in_gbps": 73.89954787268285,
+    "std_communication_throughput_in_gbps": 1.927577496366537
+}
+Collecting data...
+Generating '/tmp/nsys-report-4c69.qdstrm'
+[1/1] [0%                          ] 100mb.nsys-rep[1/1] [0%                          ] 100mb.nsys-rep[1/1] [=15%                        ] 100mb.nsys-rep[1/1] [14%                         ] 100mb.nsys-rep[1/1] [13%                         ] 100mb.nsys-rep[1/1] [12%                         ] 100mb.nsys-rep[1/1] [=16%                        ] 100mb.nsys-rep[1/1] [=15%                        ] 100mb.nsys-rep[1/1] [14%                         ] 100mb.nsys-rep[1/1] [13%                         ] 100mb.nsys-rep[1/1] [12%                         ] 100mb.nsys-rep[1/1] [11%                         ] 100mb.nsys-rep[1/1] [10%                         ] 100mb.nsys-rep[1/1] [9%                          ] 100mb.nsys-rep[1/1] [8%                          ] 100mb.nsys-rep[1/1] [9%                          ] 100mb.nsys-rep[1/1] [10%                         ] 100mb.nsys-rep[1/1] [11%                         ] 100mb.nsys-rep[1/1] [12%                         ] 100mb.nsys-rep[1/1] [13%                         ] 100mb.nsys-rep[1/1] [14%                         ] 100mb.nsys-rep[1/1] [=15%                        ] 100mb.nsys-rep[1/1] [=16%                        ] 100mb.nsys-rep[1/1] [=17%                        ] 100mb.nsys-rep[1/1] [==18%                       ] 100mb.nsys-rep[1/1] [==19%                       ] 100mb.nsys-rep[1/1] [==20%                       ] 100mb.nsys-rep[1/1] [==21%                       ] 100mb.nsys-rep[1/1] [===22%                      ] 100mb.nsys-rep[1/1] [===23%                      ] 100mb.nsys-rep[1/1] [====25%                     ] 100mb.nsys-rep[1/1] [====27%                     ] 100mb.nsys-rep[1/1] [====28%                     ] 100mb.nsys-rep[1/1] [=====30%                    ] 100mb.nsys-rep[1/1] [=====31%                    ] 100mb.nsys-rep[1/1] [======33%                   ] 100mb.nsys-rep[1/1] [======35%                   ] 100mb.nsys-rep[1/1] [=======36%                  ] 100mb.nsys-rep[1/1] [=======38%                  ] 100mb.nsys-rep[1/1] [=======39%                  ] 100mb.nsys-rep[1/1] [========41%                 ] 100mb.nsys-rep[1/1] [========42%                 ] 100mb.nsys-rep[1/1] [=========44%                ] 100mb.nsys-rep[1/1] [=========46%                ] 100mb.nsys-rep[1/1] [==========47%               ] 100mb.nsys-rep[1/1] [==========49%               ] 100mb.nsys-rep[1/1] [===========50%              ] 100mb.nsys-rep[1/1] [===========52%              ] 100mb.nsys-rep[1/1] [===========53%              ] 100mb.nsys-rep[1/1] [============55%             ] 100mb.nsys-rep[1/1] [============57%             ] 100mb.nsys-rep[1/1] [=============58%            ] 100mb.nsys-rep[1/1] [=============60%            ] 100mb.nsys-rep[1/1] [==============61%           ] 100mb.nsys-rep[1/1] [==============63%           ] 100mb.nsys-rep[1/1] [==============64%           ] 100mb.nsys-rep[1/1] [===============66%          ] 100mb.nsys-rep[1/1] [===============67%          ] 100mb.nsys-rep[1/1] [================69%         ] 100mb.nsys-rep[1/1] [================70%         ] 100mb.nsys-rep[1/1] [=================72%        ] 100mb.nsys-rep[1/1] [=================73%        ] 100mb.nsys-rep[1/1] [========================100%] 100mb.nsys-rep[1/1] [========================100%] 100mb.nsys-rep
+Generated:
+	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/bucketing/tempura_nsys_final/100mb.nsys-rep

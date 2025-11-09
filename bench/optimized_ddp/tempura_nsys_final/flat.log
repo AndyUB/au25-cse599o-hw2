@@ -1,0 +1,245 @@
+Arguments: Namespace(mode='flat', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: flat
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [1032.77294921875, 1030.569580078125, 1032.6055908203125, 1027.420166015625, 1029.4791259765625]
+(Rank 0) Gradient communication times (ms): [383.8565368652344, 385.1897888183594, 385.0484619140625, 382.9910583496094, 383.3692626953125]
+(Rank 0) Iteration time avg (std): 1030.57 (2.01) ms
+(Rank 0) Gradient communication time avg (std): 384.09 (0.88) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 37.27%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4738.10400390625,
+        3243.594482421875,
+        1402.9757080078125
+    ],
+    "warmup_communication_times": [
+        384.2866516113281,
+        383.549560546875,
+        383.260009765625
+    ],
+    "warmup_copy_times": [
+        18.04425621032715,
+        18.065439224243164,
+        17.523231506347656
+    ],
+    "copy_times": [
+        16.015296936035156,
+        16.01206398010254,
+        16.01852798461914,
+        16.003999710083008,
+        16.02390480041504
+    ],
+    "copy_time_avg": 16.014758682250978,
+    "copy_time_std": 0.00665080050414602,
+    "copy_time_pct": 1.5539770254665093,
+    "warmup_zero_grad_times": [
+        1.3624000549316406,
+        0.7237439751625061,
+        0.5719360113143921
+    ],
+    "zero_grad_times": [
+        0.5471680164337158,
+        0.5349760055541992,
+        0.5405759811401367,
+        0.5323200225830078,
+        0.5979200005531311
+    ],
+    "zero_grad_time_avg": 0.5505920052528381,
+    "zero_grad_time_std": 0.02420623215157086,
+    "zero_grad_time_pct": 0.053426608859889146,
+    "warmup_fwd_times": [
+        2090.62255859375,
+        1216.72021484375,
+        122.23990631103516
+    ],
+    "fwd_times": [
+        125.76313781738281,
+        121.90879821777344,
+        124.47052764892578,
+        121.03314971923828,
+        122.49385833740234
+    ],
+    "fwd_time_avg": 123.13389434814454,
+    "fwd_time_std": 1.7333865362846794,
+    "fwd_time_pct": 11.947888089583744,
+    "warmup_loss_times": [
+        28.438079833984375,
+        1.1223360300064087,
+        1.1209280490875244
+    ],
+    "loss_times": [
+        1.1211520433425903,
+        1.1205120086669922,
+        1.121567964553833,
+        1.1209280490875244,
+        1.120479941368103
+    ],
+    "loss_time_avg": 1.1209280014038085,
+    "loss_time_std": 0.00040830267662028983,
+    "loss_time_pct": 0.10876819320902345,
+    "warmup_bwd_times": [
+        1330.927978515625,
+        1354.9090576171875,
+        609.7950439453125
+    ],
+    "bwd_times": [
+        237.1684112548828,
+        237.4837188720703,
+        237.1826171875,
+        237.5399932861328,
+        237.65213012695312
+    ],
+    "bwd_time_avg": 237.4053741455078,
+    "bwd_time_std": 0.19540767510824947,
+    "bwd_time_pct": 23.03644746829408,
+    "warmup_step_times": [
+        884.421875,
+        268.5040588378906,
+        268.464599609375
+    ],
+    "step_times": [
+        268.30126953125,
+        268.3197326660156,
+        268.22332763671875,
+        268.1986999511719,
+        268.22161865234375
+    ],
+    "step_time_avg": 268.2529296875,
+    "step_time_std": 0.04815995238279012,
+    "step_time_pct": 26.029676004570803,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        11175735276.08338,
+        11137052862.070913,
+        11141140568.839466,
+        11200990066.15457,
+        11189939980.684978
+    ],
+    "avg_communication_throughput_in_gbps": 10.401915526731557,
+    "std_communication_throughput_in_gbps": 0.0239405144252872
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [1032.5748291015625, 1030.637939453125, 1032.8006591796875, 1027.2857666015625, 1029.5228271484375]
+(Rank 1) Gradient communication times (ms): [397.0900573730469, 396.0849609375, 396.8920593261719, 399.9483947753906, 392.7656555175781]
+(Rank 1) Iteration time avg (std): 1030.56 (2.04) ms
+(Rank 1) Gradient communication time avg (std): 396.56 (2.30) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 38.48%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4735.8544921875,
+        3246.15576171875,
+        1402.4844970703125
+    ],
+    "warmup_communication_times": [
+        401.11541748046875,
+        718.6146240234375,
+        553.6066284179688
+    ],
+    "warmup_copy_times": [
+        16.36092758178711,
+        16.295679092407227,
+        16.389888763427734
+    ],
+    "copy_times": [
+        16.018911361694336,
+        16.014432907104492,
+        16.001407623291016,
+        16.025056838989258,
+        16.004703521728516
+    ],
+    "copy_time_avg": 16.012902450561523,
+    "copy_time_std": 0.008781024499131455,
+    "copy_time_pct": 1.55380625597426,
+    "warmup_zero_grad_times": [
+        0.8333119750022888,
+        0.5786880254745483,
+        0.5643839836120605
+    ],
+    "zero_grad_times": [
+        0.7736319899559021,
+        0.3985599875450134,
+        0.45583999156951904,
+        0.4479359984397888,
+        0.38819199800491333
+    ],
+    "zero_grad_time_avg": 0.49283199310302733,
+    "zero_grad_time_std": 0.142877175471028,
+    "zero_grad_time_pct": 0.04780798957300191,
+    "warmup_fwd_times": [
+        2056.91259765625,
+        1204.536865234375,
+        112.11465454101562
+    ],
+    "fwd_times": [
+        111.28832244873047,
+        109.8108139038086,
+        110.85679626464844,
+        103.02716827392578,
+        110.89363098144531
+    ],
+    "fwd_time_avg": 109.17534637451172,
+    "fwd_time_std": 3.1128236876187443,
+    "fwd_time_pct": 10.593286437114424,
+    "warmup_loss_times": [
+        7.657760143280029,
+        1.1235519647598267,
+        1.1231039762496948
+    ],
+    "loss_times": [
+        1.120959997177124,
+        1.1198400259017944,
+        1.1197760105133057,
+        1.12118399143219,
+        1.1254719495773315
+    ],
+    "loss_time_avg": 1.121446394920349,
+    "loss_time_std": 0.002091943313889347,
+    "loss_time_pct": 0.10881924375581083,
+    "warmup_bwd_times": [
+        1370.54052734375,
+        1036.4051513671875,
+        450.1207275390625
+    ],
+    "bwd_times": [
+        237.96102905273438,
+        238.85037231445312,
+        239.1306915283203,
+        238.525634765625,
+        240.0889892578125
+    ],
+    "bwd_time_avg": 238.91134338378907,
+    "bwd_time_std": 0.7057689920000232,
+    "bwd_time_pct": 23.1826900540356,
+    "warmup_step_times": [
+        882.4342041015625,
+        268.6012878417969,
+        268.5650939941406
+    ],
+    "step_times": [
+        268.3219909667969,
+        268.3589782714844,
+        268.3440246582031,
+        268.19036865234375,
+        268.25616455078125
+    ],
+    "step_time_avg": 268.2943054199219,
+    "step_time_std": 0.06273539263231266,
+    "step_time_pct": 26.033817284585425,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        10803289985.097427,
+        10830704174.796778,
+        10808679436.124754,
+        10726081404.600157,
+        10922235637.805168
+    ],
+    "avg_communication_throughput_in_gbps": 10.07523213297581,
+    "std_communication_throughput_in_gbps": 0.05857501280874426
+}
+Collecting data...
+Generating '/tmp/nsys-report-4f33.qdstrm'
+[1/1] [0%                          ] flat.nsys-rep[1/1] [0%                          ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [13%                         ] flat.nsys-rep[1/1] [12%                         ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [=16%                        ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [13%                         ] flat.nsys-rep[1/1] [12%                         ] flat.nsys-rep[1/1] [11%                         ] flat.nsys-rep[1/1] [12%                         ] flat.nsys-rep[1/1] [13%                         ] flat.nsys-rep[1/1] [14%                         ] flat.nsys-rep[1/1] [=15%                        ] flat.nsys-rep[1/1] [=16%                        ] flat.nsys-rep[1/1] [=17%                        ] flat.nsys-rep[1/1] [==18%                       ] flat.nsys-rep[1/1] [==19%                       ] flat.nsys-rep[1/1] [==20%                       ] flat.nsys-rep[1/1] [==21%                       ] flat.nsys-rep[1/1] [===22%                      ] flat.nsys-rep[1/1] [===23%                      ] flat.nsys-rep[1/1] [===24%                      ] flat.nsys-rep[1/1] [====25%                     ] flat.nsys-rep[1/1] [====26%                     ] flat.nsys-rep[1/1] [====27%                     ] flat.nsys-rep[1/1] [=====29%                    ] flat.nsys-rep[1/1] [=====30%                    ] flat.nsys-rep[1/1] [=====31%                    ] flat.nsys-rep[1/1] [=====32%                    ] flat.nsys-rep[1/1] [======33%                   ] flat.nsys-rep[1/1] [======35%                   ] flat.nsys-rep[1/1] [=======37%                  ] flat.nsys-rep[1/1] [=======38%                  ] flat.nsys-rep[1/1] [========40%                 ] flat.nsys-rep[1/1] [========41%                 ] flat.nsys-rep[1/1] [=========43%                ] flat.nsys-rep[1/1] [=========44%                ] flat.nsys-rep[1/1] [=========46%                ] flat.nsys-rep[1/1] [==========48%               ] flat.nsys-rep[1/1] [==========49%               ] flat.nsys-rep[1/1] [===========51%              ] flat.nsys-rep[1/1] [===========52%              ] flat.nsys-rep[1/1] [============54%             ] flat.nsys-rep[1/1] [============55%             ] flat.nsys-rep[1/1] [============57%             ] flat.nsys-rep[1/1] [=============59%            ] flat.nsys-rep[1/1] [=============60%            ] flat.nsys-rep[1/1] [==============62%           ] flat.nsys-rep[1/1] [==============63%           ] flat.nsys-rep[1/1] [===============65%          ] flat.nsys-rep[1/1] [===============66%          ] flat.nsys-rep[1/1] [================68%         ] flat.nsys-rep[1/1] [================70%         ] flat.nsys-rep[1/1] [================71%         ] flat.nsys-rep[1/1] [=================73%        ] flat.nsys-rep[1/1] [=================74%        ] flat.nsys-rep[1/1] [==================75%       ] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep[1/1] [========================100%] flat.nsys-rep
+Generated:
+	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/tempura_nsys_final/flat.nsys-rep

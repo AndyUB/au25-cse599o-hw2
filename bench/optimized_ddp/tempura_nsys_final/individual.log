@@ -1,0 +1,250 @@
+WARNING: GPU initialization took too long. Please run the NVIDIA persistence daemon.
+For more information, visit the following page:
+https://docs.nvidia.com/deploy/driver-persistence/index.html#persistence-daemon
+
+Arguments: Namespace(mode='individual', world_size=2, local_batch_size=4, context_length=128, verbose=True, ckpt_dir=None, bucket_size_mb=10)
+Mode: individual
+[Note] All-reduce communication is overlapped with the backward pass. The reported communication time is the non-overlapped portion.
+=== Rank 0 Results ===
+(Rank 0) Iteration times (ms): [985.0048217773438, 994.8101806640625, 985.9181518554688, 986.9515991210938, 989.4390869140625]
+(Rank 0) Gradient communication times (ms): [41.006656646728516, 37.95027160644531, 43.219200134277344, 42.02928161621094, 39.85820770263672]
+(Rank 0) Iteration time avg (std): 988.42 (3.52) ms
+(Rank 0) Gradient communication time avg (std): 40.81 (1.81) ms
+(Rank 0) Fraction of gradient communication time in an iteration: 4.13%
+=== Rank 0 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4905.40625,
+        1358.7010498046875,
+        971.7446899414062
+    ],
+    "warmup_communication_times": [
+        31.235231399536133,
+        32.77648162841797,
+        32.93145751953125
+    ],
+    "warmup_zero_grad_times": [
+        1.9759680032730103,
+        2.8624958992004395,
+        2.8135039806365967
+    ],
+    "zero_grad_times": [
+        2.4945600032806396,
+        2.725248098373413,
+        2.496351957321167,
+        2.466815948486328,
+        2.8202879428863525
+    ],
+    "zero_grad_time_avg": 2.60065279006958,
+    "zero_grad_time_std": 0.14409041223468733,
+    "zero_grad_time_pct": 0.26307657471443585,
+    "warmup_fwd_times": [
+        2115.8115234375,
+        222.10662841796875,
+        125.3912353515625
+    ],
+    "fwd_times": [
+        125.18246459960938,
+        134.6678466796875,
+        123.11494445800781,
+        123.40045166015625,
+        124.49203491210938
+    ],
+    "fwd_time_avg": 126.17154846191406,
+    "fwd_time_std": 4.312955867555273,
+    "fwd_time_pct": 12.76369394979545,
+    "warmup_loss_times": [
+        12.329343795776367,
+        1.1264959573745728,
+        1.1217279434204102
+    ],
+    "loss_times": [
+        1.1250239610671997,
+        1.1231039762496948,
+        1.1236480474472046,
+        1.1218880414962769,
+        1.1216319799423218
+    ],
+    "loss_time_avg": 1.1230592012405396,
+    "loss_time_std": 0.0012343096543148478,
+    "loss_time_pct": 0.11362270382598946,
+    "warmup_bwd_times": [
+        2078.940185546875,
+        542.394775390625,
+        541.302001953125
+    ],
+    "bwd_times": [
+        547.0326538085938,
+        550.2302856445312,
+        547.9019775390625,
+        549.9452514648438,
+        553.103271484375
+    ],
+    "bwd_time_avg": 549.6426879882813,
+    "bwd_time_std": 2.1097300814830726,
+    "bwd_time_pct": 55.608234693898574,
+    "warmup_bwd_plus_comm_times": [
+        2110.175416946411,
+        575.171257019043,
+        574.2334594726562
+    ],
+    "bwd_plus_comm_times": [
+        588.0393104553223,
+        588.1805572509766,
+        591.1211776733398,
+        591.9745330810547,
+        592.9614791870117
+    ],
+    "bwd_plus_comm_time_avg": 590.455411529541,
+    "bwd_plus_comm_time_std": 2.0021916161979485,
+    "bwd_plus_comm_time_pct": 59.73791988821008,
+    "warmup_step_times": [
+        665.1138305664062,
+        557.4341430664062,
+        268.184814453125
+    ],
+    "step_times": [
+        268.1634826660156,
+        268.11346435546875,
+        268.0620422363281,
+        267.9879150390625,
+        268.0436706542969
+    ],
+    "step_time_avg": 268.07411499023436,
+    "step_time_std": 0.060063290916300485,
+    "step_time_pct": 27.12168879291326,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        104614211223.24646,
+        113039481890.59668,
+        99258640295.79015,
+        102068816668.64772,
+        107628498300.8961
+    ],
+    "avg_communication_throughput_in_gbps": 98.08869070916941,
+    "std_communication_throughput_in_gbps": 4.422124336363156
+}
+=== Rank 1 Results ===
+(Rank 1) Iteration times (ms): [984.9581909179688, 994.8888549804688, 985.7706909179688, 986.9515380859375, 989.4046020507812]
+(Rank 1) Gradient communication times (ms): [62.90787124633789, 89.58911895751953, 64.90924835205078, 63.15264129638672, 77.13609313964844]
+(Rank 1) Iteration time avg (std): 988.39 (3.58) ms
+(Rank 1) Gradient communication time avg (std): 71.54 (10.45) ms
+(Rank 1) Fraction of gradient communication time in an iteration: 7.23%
+=== Rank 1 Extra Stats ===
+{
+    "warmup_iteration_times": [
+        4850.5703125,
+        1256.1546630859375,
+        1130.121337890625
+    ],
+    "warmup_communication_times": [
+        165.2565155029297,
+        242.4978485107422,
+        408.2022399902344
+    ],
+    "warmup_zero_grad_times": [
+        0.8028159737586975,
+        1.9882880449295044,
+        1.6478079557418823
+    ],
+    "zero_grad_times": [
+        1.572543978691101,
+        1.7070399522781372,
+        2.4366719722747803,
+        1.602560043334961,
+        1.7833600044250488
+    ],
+    "zero_grad_time_avg": 1.8204351902008056,
+    "zero_grad_time_std": 0.3171436435845106,
+    "zero_grad_time_pct": 0.18420837291359707,
+    "warmup_fwd_times": [
+        2071.9580078125,
+        183.8131866455078,
+        109.6773452758789
+    ],
+    "fwd_times": [
+        109.98115539550781,
+        111.20972442626953,
+        111.35417938232422,
+        111.99983978271484,
+        112.08214569091797
+    ],
+    "fwd_time_avg": 111.32540893554688,
+    "fwd_time_std": 0.7548159654834196,
+    "fwd_time_pct": 11.263326748992048,
+    "warmup_loss_times": [
+        7.503615856170654,
+        1.1241600513458252,
+        1.1449600458145142
+    ],
+    "loss_times": [
+        1.1455680131912231,
+        1.1397119760513306,
+        1.1402239799499512,
+        1.1432000398635864,
+        1.1407999992370605
+    ],
+    "loss_time_avg": 1.1419008016586303,
+    "loss_time_std": 0.0021886486648707254,
+    "loss_time_pct": 0.11553286840008019,
+    "warmup_bwd_times": [
+        1995.13134765625,
+        427.3940124511719,
+        341.1380615234375
+    ],
+    "bwd_times": [
+        541.1016845703125,
+        523.0020751953125,
+        537.8034057617188,
+        541.0128784179688,
+        529.1834716796875
+    ],
+    "bwd_time_avg": 534.420703125,
+    "bwd_time_std": 7.174240340310757,
+    "bwd_time_pct": 54.07273075923642,
+    "warmup_bwd_plus_comm_times": [
+        2160.3878631591797,
+        669.8918609619141,
+        749.3403015136719
+    ],
+    "bwd_plus_comm_times": [
+        604.0095558166504,
+        612.591194152832,
+        602.7126541137695,
+        604.1655197143555,
+        606.3195648193359
+    ],
+    "bwd_plus_comm_time_avg": 605.9596977233887,
+    "bwd_plus_comm_time_std": 3.5120270388409374,
+    "bwd_plus_comm_time_pct": 61.30700780773294,
+    "warmup_step_times": [
+        609.9182739257812,
+        399.3371887207031,
+        268.31097412109375
+    ],
+    "step_times": [
+        268.2494201660156,
+        268.2411804199219,
+        268.126953125,
+        268.0403747558594,
+        268.0787048339844
+    ],
+    "step_time_avg": 268.14732666015624,
+    "step_time_std": 0.08461011518188093,
+    "step_time_pct": 27.129923589901466,
+    "total_communication_volume_in_bytes": 4289879040.0,
+    "communication_throughputs_in_bytes_per_second": [
+        68193040950.33626,
+        47883929319.96722,
+        66090413137.01275,
+        67928735076.444786,
+        55614419468.11505
+    ],
+    "avg_communication_throughput_in_gbps": 56.94302505848484,
+    "std_communication_throughput_in_gbps": 7.526957214580647
+}
+Collecting data...
+Generating '/tmp/nsys-report-8fdc.qdstrm'
+[1/1] [0%                          ] individual.nsys-rep[1/1] [0%                          ] individual.nsys-rep[1/1] [0%                          ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [=16%                        ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [10%                         ] individual.nsys-rep[1/1] [9%                          ] individual.nsys-rep[1/1] [10%                         ] individual.nsys-rep[1/1] [11%                         ] individual.nsys-rep[1/1] [12%                         ] individual.nsys-rep[1/1] [13%                         ] individual.nsys-rep[1/1] [14%                         ] individual.nsys-rep[1/1] [=15%                        ] individual.nsys-rep[1/1] [=16%                        ] individual.nsys-rep[1/1] [=17%                        ] individual.nsys-rep[1/1] [==18%                       ] individual.nsys-rep[1/1] [==19%                       ] individual.nsys-rep[1/1] [==20%                       ] individual.nsys-rep[1/1] [==21%                       ] individual.nsys-rep[1/1] [===22%                      ] individual.nsys-rep[1/1] [===23%                      ] individual.nsys-rep[1/1] [===24%                      ] individual.nsys-rep[1/1] [====25%                     ] individual.nsys-rep[1/1] [====26%                     ] individual.nsys-rep[1/1] [====27%                     ] individual.nsys-rep[1/1] [====28%                     ] individual.nsys-rep[1/1] [=====29%                    ] individual.nsys-rep[1/1] [=====31%                    ] individual.nsys-rep[1/1] [=====32%                    ] individual.nsys-rep[1/1] [======33%                   ] individual.nsys-rep[1/1] [======34%                   ] individual.nsys-rep[1/1] [======35%                   ] individual.nsys-rep[1/1] [=======36%                  ] individual.nsys-rep[1/1] [=======38%                  ] individual.nsys-rep[1/1] [=======39%                  ] individual.nsys-rep[1/1] [========40%                 ] individual.nsys-rep[1/1] [========41%                 ] individual.nsys-rep[1/1] [========42%                 ] individual.nsys-rep[1/1] [=========43%                ] individual.nsys-rep[1/1] [=========44%                ] individual.nsys-rep[1/1] [=========46%                ] individual.nsys-rep[1/1] [==========47%               ] individual.nsys-rep[1/1] [==========48%               ] individual.nsys-rep[1/1] [==========49%               ] individual.nsys-rep[1/1] [===========50%              ] individual.nsys-rep[1/1] [===========51%              ] individual.nsys-rep[1/1] [===========53%              ] individual.nsys-rep[1/1] [============54%             ] individual.nsys-rep[1/1] [============55%             ] individual.nsys-rep[1/1] [============56%             ] individual.nsys-rep[1/1] [============57%             ] individual.nsys-rep[1/1] [=============59%            ] individual.nsys-rep[1/1] [=============60%            ] individual.nsys-rep[1/1] [==============61%           ] individual.nsys-rep[1/1] [==============62%           ] individual.nsys-rep[1/1] [==============63%           ] individual.nsys-rep[1/1] [===============65%          ] individual.nsys-rep[1/1] [===============66%          ] individual.nsys-rep[1/1] [===============67%          ] individual.nsys-rep[1/1] [================68%         ] individual.nsys-rep[1/1] [================69%         ] individual.nsys-rep[1/1] [================70%         ] individual.nsys-rep[1/1] [=================72%        ] individual.nsys-rep[1/1] [=================73%        ] individual.nsys-rep[1/1] [=================74%        ] individual.nsys-rep[1/1] [==================75%       ] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep[1/1] [========================100%] individual.nsys-rep
+Generated:
+	/homes/iws/yhruan22/au25-cse599o-hw2/cse599o_systems/../bench/optimized_ddp/tempura_nsys_final/individual.nsys-rep

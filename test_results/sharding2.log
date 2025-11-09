@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.7, pytest-8.4.1, pluggy-1.6.0
+rootdir: /homes/iws/yhruan22/au25-cse599o-hw2
+configfile: pyproject.toml
+plugins: jaxtyping-0.3.2
+collected 2 items
+
+../tests/test_sharded_optimizer.py::test_sharded_optimizer[ToyModel] PASSED
+../tests/test_sharded_optimizer.py::test_sharded_optimizer[ToyModelWithTiedWeights] PASSED
+
+============================== 2 passed in 11.69s ==============================
