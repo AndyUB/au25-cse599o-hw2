@@ -1,0 +1,295 @@
+Arguments: Namespace(mode='time', world_size=2, local_batch_size=4, context_length=128, verbose=True, memory_output_dir='./sharding_memory_profiles', num_trials=5, num_warmup_trials=3)
+[Info] Generated input data.
+[Info] Completed time profiling for sharded optimizer.
+[Info] Completed time profiling for unsharded optimizer.
+--- Timing Results for Unsharded Optimizer ---
+{
+    "rank": 0,
+    "mean": {
+        "total_time_ms": 581.1259765625,
+        "zero_grad_time_ms": 0.8555199980735779,
+        "fwd_time_ms": 104.43530883789063,
+        "loss_time_ms": 1.037222409248352,
+        "bwd_time_ms": 227.2859344482422,
+        "step_time_ms": 247.5119873046875
+    },
+    "standard_deviation": {
+        "total_time_ms": 0.33391715371550407,
+        "zero_grad_time_ms": 0.06690496553862828,
+        "fwd_time_ms": 0.23868667175046132,
+        "loss_time_ms": 0.0005786324037765059,
+        "bwd_time_ms": 0.09760156864861515,
+        "step_time_ms": 0.01359100127656448
+    },
+    "breakdown_in_percentage": {
+        "zero_grad_time_ms": 0.14721354799350309,
+        "fwd_time_ms": 17.971182029059115,
+        "loss_time_ms": 0.17848499504680398,
+        "bwd_time_ms": 39.111309740143625,
+        "step_time_ms": 42.59180907347548
+    },
+    "details": [
+        {
+            "total_time_ms": 581.5350952148438,
+            "zero_grad_time_ms": 0.9772160053253174,
+            "fwd_time_ms": 104.75484466552734,
+            "loss_time_ms": 1.0377600193023682,
+            "bwd_time_ms": 227.2425994873047,
+            "step_time_ms": 247.52268981933594
+        },
+        {
+            "total_time_ms": 581.031005859375,
+            "zero_grad_time_ms": 0.8130239844322205,
+            "fwd_time_ms": 104.33948516845703,
+            "loss_time_ms": 1.0362880229949951,
+            "bwd_time_ms": 227.35626220703125,
+            "step_time_ms": 247.4859161376953
+        },
+        {
+            "total_time_ms": 581.1138305664062,
+            "zero_grad_time_ms": 0.8785920143127441,
+            "fwd_time_ms": 104.45414733886719,
+            "loss_time_ms": 1.0378880500793457,
+            "bwd_time_ms": 227.2301483154297,
+            "step_time_ms": 247.51309204101562
+        },
+        {
+            "total_time_ms": 580.5654907226562,
+            "zero_grad_time_ms": 0.8030719757080078,
+            "fwd_time_ms": 104.04589080810547,
+            "loss_time_ms": 1.0372159481048584,
+            "bwd_time_ms": 227.16380310058594,
+            "step_time_ms": 247.51548767089844
+        },
+        {
+            "total_time_ms": 581.3844604492188,
+            "zero_grad_time_ms": 0.8056960105895996,
+            "fwd_time_ms": 104.5821762084961,
+            "loss_time_ms": 1.0369600057601929,
+            "bwd_time_ms": 227.43685913085938,
+            "step_time_ms": 247.5227508544922
+        }
+    ],
+    "extra": {
+        "warmup_times": [
+            {
+                "total_time_ms": 1062.94091796875,
+                "zero_grad_time_ms": 0.35071998834609985,
+                "fwd_time_ms": 506.8368835449219,
+                "loss_time_ms": 5.996543884277344,
+                "bwd_time_ms": 287.1275634765625,
+                "step_time_ms": 262.6291809082031
+            },
+            {
+                "total_time_ms": 581.7711181640625,
+                "zero_grad_time_ms": 0.6904000043869019,
+                "fwd_time_ms": 105.08493041992188,
+                "loss_time_ms": 1.0383360385894775,
+                "bwd_time_ms": 227.33973693847656,
+                "step_time_ms": 247.6177215576172
+            },
+            {
+                "total_time_ms": 581.409423828125,
+                "zero_grad_time_ms": 0.7932479977607727,
+                "fwd_time_ms": 104.87602996826172,
+                "loss_time_ms": 1.0383360385894775,
+                "bwd_time_ms": 227.16415405273438,
+                "step_time_ms": 247.53765869140625
+            }
+        ]
+    }
+}
+--- Timing Results for Sharded Optimizer (Rank 0) ---
+{
+    "rank": 0,
+    "mean": {
+        "total_time_ms": 572.5625244140625,
+        "zero_grad_time_ms": 0.9389631986618042,
+        "fwd_time_ms": 104.08991851806641,
+        "loss_time_ms": 1.0382080316543578,
+        "bwd_time_ms": 226.943310546875,
+        "step_time_ms": 239.55211791992187
+    },
+    "standard_deviation": {
+        "total_time_ms": 0.33003985075845765,
+        "zero_grad_time_ms": 0.01378852621556809,
+        "fwd_time_ms": 0.31100604938422577,
+        "loss_time_ms": 0.0005464291607887988,
+        "bwd_time_ms": 0.16309930963573316,
+        "step_time_ms": 0.026716362040592707
+    },
+    "breakdown_in_percentage": {
+        "zero_grad_time_ms": 0.16399368031226272,
+        "fwd_time_ms": 18.179638967476418,
+        "loss_time_ms": 0.18132667524193521,
+        "bwd_time_ms": 39.636428924783004,
+        "step_time_ms": 41.83861066919247
+    },
+    "details": [
+        {
+            "total_time_ms": 572.0289306640625,
+            "zero_grad_time_ms": 0.9328320026397705,
+            "fwd_time_ms": 103.77814483642578,
+            "loss_time_ms": 1.0384960174560547,
+            "bwd_time_ms": 226.7115478515625,
+            "step_time_ms": 239.56790161132812
+        },
+        {
+            "total_time_ms": 572.7735595703125,
+            "zero_grad_time_ms": 0.9318400025367737,
+            "fwd_time_ms": 104.36812591552734,
+            "loss_time_ms": 1.0383360385894775,
+            "bwd_time_ms": 226.93069458007812,
+            "step_time_ms": 239.50457763671875
+        },
+        {
+            "total_time_ms": 572.7350463867188,
+            "zero_grad_time_ms": 0.9316160082817078,
+            "fwd_time_ms": 103.97350311279297,
+            "loss_time_ms": 1.0383360385894775,
+            "bwd_time_ms": 227.21536254882812,
+            "step_time_ms": 239.5762176513672
+        },
+        {
+            "total_time_ms": 572.34228515625,
+            "zero_grad_time_ms": 0.9665279984474182,
+            "fwd_time_ms": 103.78793334960938,
+            "loss_time_ms": 1.0387200117111206,
+            "bwd_time_ms": 226.9781494140625,
+            "step_time_ms": 239.57093811035156
+        },
+        {
+            "total_time_ms": 572.9328002929688,
+            "zero_grad_time_ms": 0.9319999814033508,
+            "fwd_time_ms": 104.54188537597656,
+            "loss_time_ms": 1.0371520519256592,
+            "bwd_time_ms": 226.88079833984375,
+            "step_time_ms": 239.54095458984375
+        }
+    ],
+    "extra": {
+        "warmup_times": [
+            {
+                "total_time_ms": 1265.4327392578125,
+                "zero_grad_time_ms": 0.36262398958206177,
+                "fwd_time_ms": 521.8734130859375,
+                "loss_time_ms": 5.498879909515381,
+                "bwd_time_ms": 292.1062316894531,
+                "step_time_ms": 445.591552734375
+            },
+            {
+                "total_time_ms": 573.5546875,
+                "zero_grad_time_ms": 0.874176025390625,
+                "fwd_time_ms": 104.66130828857422,
+                "loss_time_ms": 1.0400960445404053,
+                "bwd_time_ms": 227.34786987304688,
+                "step_time_ms": 239.6312255859375
+            },
+            {
+                "total_time_ms": 572.7011108398438,
+                "zero_grad_time_ms": 0.876800000667572,
+                "fwd_time_ms": 104.44876861572266,
+                "loss_time_ms": 1.0394879579544067,
+                "bwd_time_ms": 226.7472381591797,
+                "step_time_ms": 239.58880615234375
+            }
+        ]
+    }
+}
+--- Timing Results for Sharded Optimizer (Rank 1) ---
+{
+    "rank": 1,
+    "mean": {
+        "total_time_ms": 572.5628051757812,
+        "zero_grad_time_ms": 0.9132672071456909,
+        "fwd_time_ms": 103.97814483642578,
+        "loss_time_ms": 1.0378944158554078,
+        "bwd_time_ms": 226.43902893066405,
+        "step_time_ms": 240.19447021484376
+    },
+    "standard_deviation": {
+        "total_time_ms": 0.329308987232962,
+        "zero_grad_time_ms": 0.00566988236491682,
+        "fwd_time_ms": 0.41965701495892244,
+        "loss_time_ms": 0.0004913415701209679,
+        "bwd_time_ms": 0.09341523103652291,
+        "step_time_ms": 0.5456942054610766
+    },
+    "breakdown_in_percentage": {
+        "zero_grad_time_ms": 0.15950502115750018,
+        "fwd_time_ms": 18.160142674069085,
+        "loss_time_ms": 0.181271775526615,
+        "bwd_time_ms": 39.548339129048024,
+        "step_time_ms": 41.95074147525968
+    },
+    "details": [
+        {
+            "total_time_ms": 572.0302124023438,
+            "zero_grad_time_ms": 0.9053760170936584,
+            "fwd_time_ms": 103.97081756591797,
+            "loss_time_ms": 1.0378880500793457,
+            "bwd_time_ms": 226.36355590820312,
+            "step_time_ms": 239.75257873535156
+        },
+        {
+            "total_time_ms": 572.77294921875,
+            "zero_grad_time_ms": 0.9115840196609497,
+            "fwd_time_ms": 104.55830383300781,
+            "loss_time_ms": 1.0369600057601929,
+            "bwd_time_ms": 226.52723693847656,
+            "step_time_ms": 239.73887634277344
+        },
+        {
+            "total_time_ms": 572.732421875,
+            "zero_grad_time_ms": 0.9103040099143982,
+            "fwd_time_ms": 103.3298568725586,
+            "loss_time_ms": 1.0382720232009888,
+            "bwd_time_ms": 226.57638549804688,
+            "step_time_ms": 240.87759399414062
+        },
+        {
+            "total_time_ms": 572.3442993164062,
+            "zero_grad_time_ms": 0.921567976474762,
+            "fwd_time_ms": 104.26163482666016,
+            "loss_time_ms": 1.0380480289459229,
+            "bwd_time_ms": 226.36749267578125,
+            "step_time_ms": 239.75555419921875
+        },
+        {
+            "total_time_ms": 572.9341430664062,
+            "zero_grad_time_ms": 0.9175040125846863,
+            "fwd_time_ms": 103.77011108398438,
+            "loss_time_ms": 1.0383039712905884,
+            "bwd_time_ms": 226.3604736328125,
+            "step_time_ms": 240.84774780273438
+        }
+    ],
+    "extra": {
+        "warmup_times": [
+            {
+                "total_time_ms": 1282.6495361328125,
+                "zero_grad_time_ms": 0.35839998722076416,
+                "fwd_time_ms": 523.5537719726562,
+                "loss_time_ms": 5.419007778167725,
+                "bwd_time_ms": 279.73529052734375,
+                "step_time_ms": 473.5830078125
+            },
+            {
+                "total_time_ms": 573.5501708984375,
+                "zero_grad_time_ms": 1.0033279657363892,
+                "fwd_time_ms": 104.15692901611328,
+                "loss_time_ms": 1.0386879444122314,
+                "bwd_time_ms": 226.88198852539062,
+                "step_time_ms": 240.46922302246094
+            },
+            {
+                "total_time_ms": 572.7380981445312,
+                "zero_grad_time_ms": 0.9180480241775513,
+                "fwd_time_ms": 103.50387573242188,
+                "loss_time_ms": 1.0383360385894775,
+                "bwd_time_ms": 226.23231506347656,
+                "step_time_ms": 241.04550170898438
+            }
+        ]
+    }
+}

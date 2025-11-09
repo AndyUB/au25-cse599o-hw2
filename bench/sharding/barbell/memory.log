@@ -1,0 +1,265 @@
+Arguments: Namespace(mode='memory', world_size=2, local_batch_size=4, context_length=128, verbose=True, memory_output_dir='../bench/sharding/barbell/memory_profiles', num_trials=5, num_warmup_trials=3)
+[Info] Generated input data.
+[rank1]:[W1109 02:32:39.095899463 unwind.cpp:218] Warning: Unsupported unwinding pattern: unknown op code 0x8 (function unwinderFor)
+[rank0]:[W1109 02:32:39.115363376 unwind.cpp:218] Warning: Unsupported unwinding pattern: unknown op code 0x8 (function unwinderFor)
+[W1109 02:32:45.148590101 unwind.cpp:218] Warning: Unsupported unwinding pattern: unknown op code 0x8 (function unwinderFor)
+[Info] Completed memory profiling for sharded optimizer.
+[Info] Completed memory profiling for unsharded optimizer.
+--- Memory Profiling Results for Unsharded Optimizer ---
+{
+    "rank": 0,
+    "profiled_stats": {
+        "memory_base": {
+            "curr_allocated_bytes": 0,
+            "curr_reserved_bytes": 0,
+            "max_allocated_bytes": 0,
+            "max_reserved_bytes": 0
+        },
+        "memory_after_data_move": {
+            "curr_allocated_bytes": 4608,
+            "curr_reserved_bytes": 2097152,
+            "max_allocated_bytes": 4608,
+            "max_reserved_bytes": 2097152
+        },
+        "memory_after_model_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_optimizer_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_first_forward": {
+            "curr_allocated_bytes": 7739905536,
+            "curr_reserved_bytes": 7809794048,
+            "max_allocated_bytes": 7739905536,
+            "max_reserved_bytes": 7809794048
+        },
+        "memory_after_first_backward": {
+            "curr_allocated_bytes": 8908866560,
+            "curr_reserved_bytes": 11324620800,
+            "max_allocated_bytes": 8911505408,
+            "max_reserved_bytes": 11324620800
+        },
+        "memory_after_first_step": {
+            "curr_allocated_bytes": 17699433472,
+            "curr_reserved_bytes": 19383975936,
+            "max_allocated_bytes": 18473282560,
+            "max_reserved_bytes": 19383975936
+        },
+        "memory_after_zero_grad": {
+            "curr_allocated_bytes": 13314963456,
+            "curr_reserved_bytes": 19383975936,
+            "max_allocated_bytes": 17699433472,
+            "max_reserved_bytes": 19383975936
+        },
+        "memory_after_second_forward": {
+            "curr_allocated_bytes": 16604004352,
+            "curr_reserved_bytes": 19386073088,
+            "max_allocated_bytes": 16706930688,
+            "max_reserved_bytes": 19386073088
+        },
+        "memory_after_second_backward": {
+            "curr_allocated_bytes": 17683704832,
+            "curr_reserved_bytes": 19386073088,
+            "max_allocated_bytes": 17686343680,
+            "max_reserved_bytes": 19386073088
+        },
+        "memory_after_second_step": {
+            "curr_allocated_bytes": 17683704832,
+            "curr_reserved_bytes": 20159922176,
+            "max_allocated_bytes": 18457553920,
+            "max_reserved_bytes": 20159922176
+        }
+    },
+    "computed_bytes": {
+        "data_bytes": 4128,
+        "param_bytes": 4289879040,
+        "buffer_bytes": 32768,
+        "pre_step_optimizer_bytes": 0,
+        "grad_bytes": [
+            4289879040,
+            4289879040
+        ],
+        "post_step_optimizer_bytes": [
+            8579758080,
+            8579758080
+        ]
+    }
+}
+--- Memory Profiling Results for Sharded Optimizer (Rank 0) ---
+{
+    "rank": 0,
+    "profiled_stats": {
+        "memory_base": {
+            "curr_allocated_bytes": 0,
+            "curr_reserved_bytes": 0,
+            "max_allocated_bytes": 0,
+            "max_reserved_bytes": 0
+        },
+        "memory_after_data_move": {
+            "curr_allocated_bytes": 4608,
+            "curr_reserved_bytes": 2097152,
+            "max_allocated_bytes": 4608,
+            "max_reserved_bytes": 2097152
+        },
+        "memory_after_model_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_optimizer_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_first_forward": {
+            "curr_allocated_bytes": 7739905536,
+            "curr_reserved_bytes": 7809794048,
+            "max_allocated_bytes": 7739905536,
+            "max_reserved_bytes": 7809794048
+        },
+        "memory_after_first_backward": {
+            "curr_allocated_bytes": 8908866560,
+            "curr_reserved_bytes": 11324620800,
+            "max_allocated_bytes": 8911505408,
+            "max_reserved_bytes": 11324620800
+        },
+        "memory_after_first_step": {
+            "curr_allocated_bytes": 13801497600,
+            "curr_reserved_bytes": 16166944768,
+            "max_allocated_bytes": 14575346688,
+            "max_reserved_bytes": 16166944768
+        },
+        "memory_after_zero_grad": {
+            "curr_allocated_bytes": 9417027584,
+            "curr_reserved_bytes": 16166944768,
+            "max_allocated_bytes": 13801497600,
+            "max_reserved_bytes": 16166944768
+        },
+        "memory_after_second_forward": {
+            "curr_allocated_bytes": 12680902656,
+            "curr_reserved_bytes": 16169041920,
+            "max_allocated_bytes": 12783828992,
+            "max_reserved_bytes": 16169041920
+        },
+        "memory_after_second_backward": {
+            "curr_allocated_bytes": 13793108992,
+            "curr_reserved_bytes": 16169041920,
+            "max_allocated_bytes": 13795747840,
+            "max_reserved_bytes": 16169041920
+        },
+        "memory_after_second_step": {
+            "curr_allocated_bytes": 13793108992,
+            "curr_reserved_bytes": 16684941312,
+            "max_allocated_bytes": 14566958080,
+            "max_reserved_bytes": 16684941312
+        }
+    },
+    "computed_bytes": {
+        "data_bytes": 4128,
+        "param_bytes": 4289879040,
+        "buffer_bytes": 32768,
+        "pre_step_optimizer_bytes": 0,
+        "grad_bytes": [
+            4289879040,
+            4289879040
+        ],
+        "post_step_optimizer_bytes": [
+            4804505600,
+            4804505600
+        ]
+    }
+}
+--- Memory Profiling Results for Sharded Optimizer (Rank 1) ---
+{
+    "rank": 1,
+    "profiled_stats": {
+        "memory_base": {
+            "curr_allocated_bytes": 0,
+            "curr_reserved_bytes": 0,
+            "max_allocated_bytes": 0,
+            "max_reserved_bytes": 0
+        },
+        "memory_after_data_move": {
+            "curr_allocated_bytes": 4608,
+            "curr_reserved_bytes": 2097152,
+            "max_allocated_bytes": 4608,
+            "max_reserved_bytes": 2097152
+        },
+        "memory_after_model_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_optimizer_init": {
+            "curr_allocated_bytes": 4404430336,
+            "curr_reserved_bytes": 4469030912,
+            "max_allocated_bytes": 4404430336,
+            "max_reserved_bytes": 4469030912
+        },
+        "memory_after_first_forward": {
+            "curr_allocated_bytes": 7739905536,
+            "curr_reserved_bytes": 7809794048,
+            "max_allocated_bytes": 7739905536,
+            "max_reserved_bytes": 7809794048
+        },
+        "memory_after_first_backward": {
+            "curr_allocated_bytes": 8908866560,
+            "curr_reserved_bytes": 11324620800,
+            "max_allocated_bytes": 8911505408,
+            "max_reserved_bytes": 11324620800
+        },
+        "memory_after_first_step": {
+            "curr_allocated_bytes": 12796972032,
+            "curr_reserved_bytes": 14323548160,
+            "max_allocated_bytes": 12878750720,
+            "max_reserved_bytes": 14323548160
+        },
+        "memory_after_zero_grad": {
+            "curr_allocated_bytes": 8412502016,
+            "curr_reserved_bytes": 14323548160,
+            "max_allocated_bytes": 12796972032,
+            "max_reserved_bytes": 14323548160
+        },
+        "memory_after_second_forward": {
+            "curr_allocated_bytes": 11676377088,
+            "curr_reserved_bytes": 14325645312,
+            "max_allocated_bytes": 11779303424,
+            "max_reserved_bytes": 14325645312
+        },
+        "memory_after_second_backward": {
+            "curr_allocated_bytes": 12793826304,
+            "curr_reserved_bytes": 14665383936,
+            "max_allocated_bytes": 12796465152,
+            "max_reserved_bytes": 14665383936
+        },
+        "memory_after_second_step": {
+            "curr_allocated_bytes": 12793826304,
+            "curr_reserved_bytes": 14719909888,
+            "max_allocated_bytes": 12874566656,
+            "max_reserved_bytes": 14719909888
+        }
+    },
+    "computed_bytes": {
+        "data_bytes": 4128,
+        "param_bytes": 4289879040,
+        "buffer_bytes": 32768,
+        "pre_step_optimizer_bytes": 0,
+        "grad_bytes": [
+            4289879040,
+            4289879040
+        ],
+        "post_step_optimizer_bytes": [
+            3775252480,
+            3775252480
+        ]
+    }
+}
