@@ -4,7 +4,7 @@ import torch
 from cse599o_basics.util import AdamW, cross_entropy_loss
 from cse599o_basics.transformer import Transformer
 
-from benchmark_naive_ddp import (
+from .benchmark_naive_ddp import (
     SEED,
     TRANSFORMER_ARGS,
     ADAMW_ARGS,
@@ -13,7 +13,7 @@ from benchmark_naive_ddp import (
     CONTEXT_LENGTH,
     set_seed,
 )
-from benchmark_optimized_ddp import NUM_ITERS, NUM_WARMUP
+from .benchmark_optimized_ddp import NUM_ITERS, NUM_WARMUP
 
 
 def run_baseline_transformer(
