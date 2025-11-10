@@ -1,0 +1,1 @@
+Arguments: Namespace(output_dir='../bench/allreduce/tempura', world_size=4, tensor_size=1000, warmup_iters=5, benchmark_iters=10, use_gloo=False)

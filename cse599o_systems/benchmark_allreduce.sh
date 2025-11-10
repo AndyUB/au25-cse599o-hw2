@@ -17,8 +17,8 @@ else
     DEVICE="gpu"
 fi
 
-OUTPUT_DIR=../bench/allreduce
-# OUTPUT_DIR=../bench/allreduce/tempura
+# OUTPUT_DIR=../bench/allreduce
+OUTPUT_DIR=../bench/allreduce/tempura
 # If -c (or -cd) is specified, clean previous logs
 if [ "$1" == "-c" ] || [ "$1" == "-cd" ]; then
     rm -rf $OUTPUT_DIR
@@ -28,7 +28,7 @@ mkdir -p $OUTPUT_DIR
 # Num processes: 2, 4, 8
 # Tensor sizes: 1MB, 10MB, 100MB, 1GB
 world_size_list=(2 4 8)
-tensor_size_mb_list=(1 10 100 1024)
+tensor_size_mb_list=(1 10 100 1000)
 
 for world_size in "${world_size_list[@]}"; do
     for tensor_size_mb in "${tensor_size_mb_list[@]}"; do
